@@ -1,0 +1,42 @@
+{
+  "name": "audio-normalizer",
+  "version": "0.1.0",
+  "description": "Normalize audio files to an optimal loudness (LUFS / peak) from the command line. Bundles ffmpeg, so it just works with npx.",
+  "type": "module",
+  "bin": {
+    "audio-normalizer": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "audio",
+    "loudness",
+    "normalize",
+    "normalization",
+    "lufs",
+    "ebu-r128",
+    "ffmpeg",
+    "volume",
+    "cli"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "tinyglobby": "^0.2.10"
+  },
+  "devDependencies": {
+    "@audio-normalizer/core": "*",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT"
+}

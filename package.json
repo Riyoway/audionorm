@@ -1,0 +1,19 @@
+{
+  "name": "audio-normalizer-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Normalize audio files to an optimal loudness — CLI (npx) + browser web app.",
+  "workspaces": [
+    "packages/core",
+    "packages/cli",
+    "packages/web"
+  ],
+  "scripts": {
+    "build": "npm run build -w audio-normalizer && npm run build -w web",
+    "build:cli": "npm run build -w audio-normalizer",
+    "dev:web": "npm run dev -w web",
+    "build:web": "npm run build -w web",
+    "cli": "node packages/cli/dist/index.js"
+  },
+  "license": "MIT"
+}

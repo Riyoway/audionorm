@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+.env
+# build/test artifacts
+packages/cli/dist/
+packages/web/dist/
+*.tsbuildinfo
+# sample/output audio used during local testing
+/tmp-audio/
