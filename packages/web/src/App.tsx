@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import {
-  AudioLines,
   ShieldCheck,
   Gauge,
   SlidersHorizontal,
@@ -97,7 +96,7 @@ export function App() {
     <div className="app">
       <header className="header">
         <h1>
-          <AudioLines className="title-icon" size={30} strokeWidth={2.2} />
+          <img src="/icon-192.png" alt="" className="title-logo" />
           Audio Loudness Normalizer
         </h1>
         <p className="tagline">
