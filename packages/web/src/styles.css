@@ -19,36 +19,68 @@
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 600px at 50% -10%, #1a2030 0%, var(--bg) 60%);
+  background: var(--bg);
+  background-attachment: fixed;
+  background-image: radial-gradient(1200px 600px at 50% -10%, #1a2030 0%, var(--bg) 60%);
   color: var(--text);
   min-height: 100vh;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 48px 20px 80px;
+  min-height: 100vh;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.header h1 {
-  font-size: 2rem;
-  margin: 0 0 8px;
+/* App bar */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  padding-top: calc(12px + env(safe-area-inset-top));
+  background: rgba(15, 17, 21, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-bar-brand {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.title-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+.app-bar-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.app-bar-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.app-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.app.has-action-bar .app-main {
+  padding-bottom: 120px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 26px;
 }
 
 .tagline {
@@ -78,6 +110,48 @@ body {
 
 .btn-install:hover {
   filter: brightness(1.08);
+}
+
+.badge-offline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: rgba(91, 140, 255, 0.08);
+  border: 1px solid rgba(91, 140, 255, 0.25);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* Sticky bottom action bar (app-like) */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .action-bar button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .btn-install-label {
+    display: none;
+  }
 }
 
 .privacy {

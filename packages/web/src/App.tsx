@@ -6,6 +6,7 @@ import {
   RefreshCw,
   Download,
   MonitorDown,
+  CloudOff,
 } from "lucide-react";
 import { PRESETS, getPreset, DEFAULT_PRESET_ID } from "@audio-normalizer/core";
 import { processFile, type ProcessResult } from "./lib/processor";
@@ -96,29 +97,37 @@ export function App() {
   const doneCount = items.filter((it) => it.status === "done").length;
 
   return (
-    <div className="app">
-      <header className="header">
-        <h1>
-          <img src="/icon-192.png" alt="" className="title-logo" />
-          Audio Loudness Normalizer
-        </h1>
-        <p className="tagline">
-          Bring every clip to a consistent, optimal volume. Great for taming
-          too-loud free sound effects and UI/button sounds.
-        </p>
-        <div className="header-badges">
-          <span className="privacy">
-            <ShieldCheck size={15} />
-            Runs in your browser — nothing is uploaded
-          </span>
-          {canInstall && (
-            <button className="btn-install" onClick={promptInstall}>
-              <MonitorDown size={16} />
-              Install app
-            </button>
-          )}
+    <div className={`app${items.length > 0 ? " has-action-bar" : ""}`}>
+      <header className="app-bar">
+        <div className="app-bar-brand">
+          <img src="/icon-192.png" alt="" className="app-bar-logo" />
+          <span className="app-bar-title">Audio Normalizer</span>
         </div>
+        {canInstall && (
+          <button className="btn-install" onClick={promptInstall}>
+            <MonitorDown size={16} />
+            <span className="btn-install-label">Install</span>
+          </button>
+        )}
       </header>
+
+      <main className="app-main">
+        <section className="hero">
+          <p className="tagline">
+            Bring every clip to a consistent, optimal volume. Great for taming
+            too-loud free sound effects and UI/button sounds.
+          </p>
+          <div className="header-badges">
+            <span className="privacy">
+              <ShieldCheck size={15} />
+              Nothing is uploaded
+            </span>
+            <span className="badge-offline">
+              <CloudOff size={15} />
+              Works offline
+            </span>
+          </div>
+        </section>
 
       <section className="controls">
         <div className="control">
@@ -160,20 +169,6 @@ export function App() {
             <span>
               {doneCount}/{items.length} processed
             </span>
-            <div className="results-actions">
-              <button onClick={reprocessAll} className="btn-secondary">
-                <RefreshCw size={15} />
-                Re-apply preset
-              </button>
-              <button
-                onClick={downloadAll}
-                className="btn-primary"
-                disabled={doneCount === 0}
-              >
-                <Download size={15} />
-                Download all ({doneCount})
-              </button>
-            </div>
           </div>
           <div className="file-list">
             {items.map((item) => (
@@ -183,11 +178,25 @@ export function App() {
         </section>
       )}
 
-      <footer className="footer">
-        <p>
-          Also available as a CLI: <code>npx audio-normalizer ./sounds -p sfx</code>
-        </p>
-      </footer>
+        <footer className="footer">
+          <p>
+            Also available as a CLI: <code>npx audio-normalizer ./sounds -p sfx</code>
+          </p>
+        </footer>
+      </main>
+
+      {items.length > 0 && (
+        <div className="action-bar">
+          <button onClick={reprocessAll} className="btn-secondary">
+            <RefreshCw size={15} />
+            Re-apply
+          </button>
+          <button onClick={downloadAll} className="btn-primary" disabled={doneCount === 0}>
+            <Download size={15} />
+            Download all ({doneCount})
+          </button>
+        </div>
+      )}
     </div>
   );
 }
