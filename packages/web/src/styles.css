@@ -1,6 +1,6 @@
 /* =========================================================================
-   Audio Normalizer — "broadcast console" visual system
-   Warm near-black panels · VU-amber signal · green/red LED level cues
+   Audio Normalizer — monochrome console
+   Neutral grayscale surfaces · a single blue/violet accent, used sparingly
    Display: Bricolage Grotesque · Body: Archivo · Readouts: JetBrains Mono
    ========================================================================= */
 
@@ -9,23 +9,27 @@
   --font-body: "Archivo Variable", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
 
-  --ink: #0b0a08;
-  --ink-2: #100e0b;
-  --panel: #16130e;
-  --panel-hi: #1d1913;
-  --line: #2c271e;
-  --line-soft: #211d16;
+  /* neutral monochrome ramp */
+  --ink: #0a0a0b;
+  --ink-2: #0e0e10;
+  --panel: #141416;
+  --panel-hi: #1b1b1e;
+  --line: #2a2a2e;
+  --line-soft: #202023;
 
-  --paper: #ece3d2;
-  --muted: #968b78;
-  --faint: #5f574a;
+  --paper: #ededf0;
+  --muted: #8a8a92;
+  --faint: #585860;
 
-  --signal: #f5a524; /* VU amber */
-  --signal-deep: #c47e12;
-  --signal-glow: rgba(245, 165, 36, 0.35);
-  --good: #5bd089; /* in-range green LED */
-  --hot: #ff5b48; /* clip / too-loud red LED */
-  --cool: #74cfc6; /* cool secondary, used sparingly */
+  /* the one accent — switch blue <-> violet here */
+  --accent: #6f87ff;
+  --accent-deep: #5163d6;
+  --accent-soft: rgba(111, 135, 255, 0.14);
+  --accent-glow: rgba(111, 135, 255, 0.4);
+  --on-accent: #07070a;
+
+  /* error: stays monochrome, just brighter */
+  --alert: #d7d7dd;
 
   --r: 12px;
   --r-sm: 8px;
@@ -46,8 +50,7 @@ body {
   color: var(--paper);
   background-color: var(--ink);
   background-image:
-    radial-gradient(900px 460px at 50% -120px, rgba(245, 165, 36, 0.1), transparent 70%),
-    radial-gradient(700px 700px at 100% 0%, rgba(116, 207, 198, 0.05), transparent 60%),
+    radial-gradient(900px 460px at 50% -140px, var(--accent-soft), transparent 70%),
     linear-gradient(var(--ink), var(--ink-2));
   background-attachment: fixed;
   min-height: 100vh;
@@ -57,20 +60,20 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* film-grain overlay for analog texture */
+/* film-grain overlay for texture */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.045;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::selection {
-  background: var(--signal);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* ---------- shared atoms ---------------------------------------------- */
@@ -81,7 +84,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .mono {
@@ -102,7 +105,7 @@ button {
   color: var(--paper);
   background: var(--panel-hi);
   transition: transform 0.06s ease, filter 0.15s ease, border-color 0.15s ease,
-    background 0.15s ease;
+    background 0.15s ease, color 0.15s ease;
 }
 
 button:active {
@@ -115,15 +118,15 @@ button:disabled {
 }
 
 .btn-primary {
-  background: var(--signal);
-  color: #1a1205;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: transparent;
   font-weight: 700;
-  box-shadow: 0 6px 20px -8px var(--signal-glow);
+  box-shadow: 0 6px 20px -8px var(--accent-glow);
 }
 
 .btn-primary:hover:not(:disabled) {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
 }
 
 .btn-secondary {
@@ -132,8 +135,8 @@ button:disabled {
 }
 
 .btn-secondary:hover:not(:disabled) {
-  border-color: var(--signal-deep);
-  color: var(--signal);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .btn-ghost {
@@ -165,9 +168,9 @@ button:disabled {
   gap: 16px;
   padding: 13px 22px;
   padding-top: calc(13px + env(safe-area-inset-top));
-  background: rgba(11, 10, 8, 0.72);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  background: rgba(10, 10, 11, 0.72);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
   border-bottom: 1px solid var(--line);
 }
 
@@ -186,6 +189,7 @@ button:disabled {
   height: 30px;
   border-radius: 7px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--line);
+  filter: grayscale(1) contrast(1.02);
 }
 
 .app-bar-title {
@@ -197,7 +201,7 @@ button:disabled {
 }
 
 .app-bar-title b {
-  color: var(--signal);
+  color: var(--accent);
   font-weight: 800;
 }
 
@@ -224,7 +228,7 @@ button:disabled {
 }
 
 .nav-link.active {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .icon-link {
@@ -240,18 +244,18 @@ button:disabled {
 }
 
 .btn-install {
-  background: var(--signal);
-  color: #1a1205;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: transparent;
   font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.03em;
   padding: 8px 14px;
-  box-shadow: 0 6px 18px -8px var(--signal-glow);
+  box-shadow: 0 6px 18px -8px var(--accent-glow);
 }
 
 .btn-install:hover {
-  filter: brightness(1.07);
+  filter: brightness(1.08);
 }
 
 /* ---------- layout shell ---------------------------------------------- */
@@ -264,7 +268,6 @@ button:disabled {
   flex: 1;
 }
 
-/* staggered entrance */
 @keyframes rise {
   from {
     opacity: 0;
@@ -313,7 +316,7 @@ button:disabled {
 
 .hero h1 em {
   font-style: normal;
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .hero-sub {
@@ -344,8 +347,8 @@ button:disabled {
   font-variant-numeric: tabular-nums;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--signal);
-  text-shadow: 0 0 18px var(--signal-glow);
+  color: var(--accent);
+  text-shadow: 0 0 18px var(--accent-glow);
 }
 
 .meter-readout small {
@@ -363,10 +366,10 @@ button:disabled {
   overflow: hidden;
   background: linear-gradient(
     90deg,
-    #243a2b 0%,
-    var(--good) 34%,
-    var(--signal) 70%,
-    var(--hot) 100%
+    #1d1d20 0%,
+    #3a3a40 45%,
+    #6a6a73 72%,
+    var(--accent) 100%
   );
 }
 
@@ -388,7 +391,7 @@ button:disabled {
   bottom: -3px;
   width: 3px;
   background: var(--paper);
-  box-shadow: 0 0 10px rgba(236, 227, 210, 0.9);
+  box-shadow: 0 0 10px rgba(237, 237, 240, 0.9);
   border-radius: 2px;
   animation: sweep 3.2s cubic-bezier(0.3, 0.8, 0.2, 1) both;
 }
@@ -419,13 +422,13 @@ button:disabled {
 }
 
 .meter-scale span.tgt {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 /* ---------- panels (signal chain) ------------------------------------- */
 
 .panel {
-  background: linear-gradient(180deg, rgba(29, 25, 19, 0.5), var(--panel));
+  background: linear-gradient(180deg, rgba(27, 27, 30, 0.5), var(--panel));
   border: 1px solid var(--line);
   border-radius: var(--r);
   padding: 22px;
@@ -445,8 +448,8 @@ button:disabled {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--ink);
-  background: var(--signal);
+  color: var(--on-accent);
+  background: var(--accent);
   border-radius: 5px;
   padding: 3px 7px;
 }
@@ -493,7 +496,7 @@ button:disabled {
 }
 
 .control label svg {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .hint {
@@ -520,12 +523,12 @@ button:disabled {
 }
 
 .select-trigger:hover {
-  border-color: var(--signal-deep);
+  border-color: var(--accent);
 }
 
 .select.open .select-trigger {
-  border-color: var(--signal);
-  box-shadow: 0 0 0 3px var(--signal-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .select-value {
@@ -542,7 +545,7 @@ button:disabled {
 
 .select.open .select-chevron {
   transform: rotate(180deg);
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .select-menu {
@@ -575,16 +578,16 @@ button:disabled {
 }
 
 .select-option.active {
-  background: rgba(245, 165, 36, 0.12);
+  background: var(--accent-soft);
 }
 
 .select-option.selected {
-  color: var(--signal);
+  color: var(--accent);
   font-weight: 600;
 }
 
 .select-check {
-  color: var(--signal);
+  color: var(--accent);
   flex-shrink: 0;
 }
 
@@ -599,7 +602,7 @@ button:disabled {
   background: repeating-linear-gradient(
       -45deg,
       transparent 0 14px,
-      rgba(245, 165, 36, 0.015) 14px 28px
+      rgba(255, 255, 255, 0.012) 14px 28px
     ),
     var(--ink-2);
   transition: border-color 0.15s, background-color 0.15s;
@@ -607,12 +610,12 @@ button:disabled {
 
 .dropzone:hover,
 .dropzone.dragging {
-  border-color: var(--signal);
-  background-color: rgba(245, 165, 36, 0.04);
+  border-color: var(--accent);
+  background-color: var(--accent-soft);
 }
 
 .dropzone-icon {
-  color: var(--signal);
+  color: var(--accent);
   display: flex;
   justify-content: center;
 }
@@ -623,7 +626,7 @@ button:disabled {
 }
 
 .dropzone-text span {
-  color: var(--signal);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -690,7 +693,7 @@ button:disabled {
 }
 
 .file-row.error {
-  border-color: rgba(255, 91, 72, 0.4);
+  border-color: var(--muted);
 }
 
 .file-main {
@@ -739,7 +742,7 @@ button:disabled {
 }
 
 .metric.gain .metric-value {
-  color: var(--good);
+  color: var(--accent);
 }
 
 .badge {
@@ -759,16 +762,16 @@ button:disabled {
   color: var(--muted);
 }
 .badge.processing {
-  background: rgba(245, 165, 36, 0.14);
-  color: var(--signal);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 .badge.error {
-  background: rgba(255, 91, 72, 0.16);
-  color: var(--hot);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--alert);
 }
 .badge.limited {
-  background: rgba(255, 91, 72, 0.14);
-  color: var(--hot);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--alert);
 }
 
 .btn-download {
@@ -778,14 +781,14 @@ button:disabled {
 }
 
 .btn-download:hover {
-  border-color: var(--signal-deep);
-  color: var(--signal);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .file-error {
   grid-column: 1 / -1;
   font-size: 0.8rem;
-  color: var(--hot);
+  color: var(--alert);
 }
 
 /* ---------- A/B player ----------------------------------------------- */
@@ -808,8 +811,8 @@ button:disabled {
   height: 38px;
   padding: 0;
   border-radius: 50%;
-  background: var(--signal);
-  color: #1a1205;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: transparent;
   flex-shrink: 0;
 }
@@ -840,14 +843,14 @@ button:disabled {
 }
 
 .ab-toggle button.active {
-  background: var(--signal);
-  color: #1a1205;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .ab-seek {
   flex: 1;
   min-width: 60px;
-  accent-color: var(--signal);
+  accent-color: var(--accent);
   cursor: pointer;
 }
 
@@ -905,10 +908,6 @@ button:disabled {
   display: none;
 }
 
-.copy-command code .tok {
-  color: var(--signal);
-}
-
 .copy-btn {
   flex-shrink: 0;
   background: var(--panel-hi);
@@ -923,8 +922,8 @@ button:disabled {
 }
 
 .copy-btn.copied {
-  color: var(--good);
-  border-color: rgba(91, 208, 137, 0.4);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ---------- docs page ------------------------------------------------- */
@@ -974,8 +973,8 @@ button:disabled {
 
 .doc-h-i {
   font-family: var(--font-mono);
-  color: var(--signal);
-  background: rgba(245, 165, 36, 0.1);
+  color: var(--accent);
+  background: var(--accent-soft);
   border: 1px solid var(--line);
   width: 31px;
   height: 31px;
@@ -1032,7 +1031,7 @@ button:disabled {
 }
 
 .doc-id {
-  color: var(--signal);
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -1066,7 +1065,7 @@ button:disabled {
 }
 
 .opt dt {
-  color: var(--signal);
+  color: var(--accent);
   font-size: 0.83rem;
 }
 
@@ -1122,6 +1121,7 @@ button:disabled {
   height: 30px;
   border-radius: 7px;
   box-shadow: 0 0 0 1px var(--line);
+  filter: grayscale(1) contrast(1.02);
 }
 
 .footer-name {
@@ -1133,7 +1133,7 @@ button:disabled {
 }
 
 .footer-name b {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .footer-tag {
@@ -1164,7 +1164,7 @@ button:disabled {
 }
 
 .footer-chips svg {
-  color: var(--good);
+  color: var(--accent);
 }
 
 .footer-col h4 {
@@ -1192,7 +1192,7 @@ button:disabled {
 }
 
 .footer-link:hover {
-  color: var(--signal);
+  color: var(--accent);
 }
 
 .footer-cli .copy-command {

@@ -15,8 +15,8 @@ export default defineConfig({
         short_name: "Loudness",
         description:
           "Normalize audio files to an optimal, consistent loudness — right in your browser, fully offline. Nothing is uploaded.",
-        theme_color: "#0d1020",
-        background_color: "#0f1115",
+        theme_color: "#0a0a0b",
+        background_color: "#0a0a0b",
         display: "standalone",
         orientation: "portrait",
         start_url: "/",
