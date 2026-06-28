@@ -5,6 +5,10 @@ import {
   RefreshCw,
   Download,
   MonitorDown,
+  ShieldCheck,
+  CloudOff,
+  Zap,
+  ArrowUpRight,
 } from "lucide-react";
 
 function GitHubMark({ size = 18 }: { size?: number }) {
@@ -44,6 +48,7 @@ export function App() {
 
   const preset = useMemo(() => getPreset(presetId)!, [presetId]);
   const { canInstall, promptInstall } = usePwaInstall();
+  const year = new Date().getFullYear();
 
   const readout =
     preset.method === "peak"
@@ -153,8 +158,7 @@ export function App() {
       {view === "docs" ? (
         <DocsView onBack={() => setView("app")} />
       ) : (
-       <>
-      <main className="app-main">
+        <main className="app-main">
         <section className="hero">
           <span className="eyebrow">Loudness Normalizer · EBU R128</span>
           <h1>
@@ -266,18 +270,96 @@ export function App() {
           </section>
         )}
       </main>
+      )}
 
       <footer className="site-footer">
-        <div className="site-footer-inner">
-          <p className="eyebrow" style={{ marginBottom: 12 }}>
-            Also a CLI — bundles ffmpeg, no install
-          </p>
-          <CopyCommand command="npx audio-normalizer track.wav" />
-          <CopyCommand command="npx audio-normalizer ./sounds -p sfx" />
+        <div className="site-footer-inner footer-grid">
+          <div className="footer-brand">
+            <div className="footer-brand-row">
+              <img src="/icon-192.png" alt="" className="footer-logo" />
+              <span className="footer-name">
+                Audio<b>Norm</b>
+              </span>
+            </div>
+            <p className="footer-tag">
+              Normalize audio to an optimal, consistent loudness — in your browser or
+              the terminal.
+            </p>
+            <div className="footer-chips">
+              <span>
+                <ShieldCheck size={13} /> No upload
+              </span>
+              <span>
+                <CloudOff size={13} /> Offline
+              </span>
+              <span>
+                <Zap size={13} /> Free &amp; OSS
+              </span>
+            </div>
+          </div>
+
+          <nav className="footer-col">
+            <h4>App</h4>
+            <button
+              className="footer-link"
+              onClick={() => {
+                setView("app");
+                window.scrollTo({ top: 0 });
+              }}
+            >
+              Normalizer
+            </button>
+            <button
+              className="footer-link"
+              onClick={() => {
+                setView("docs");
+                window.scrollTo({ top: 0 });
+              }}
+            >
+              Docs
+            </button>
+            {canInstall && (
+              <button className="footer-link" onClick={promptInstall}>
+                Install app
+              </button>
+            )}
+          </nav>
+
+          <nav className="footer-col">
+            <h4>Code</h4>
+            <a className="footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer">
+              GitHub <ArrowUpRight size={13} />
+            </a>
+            <a
+              className="footer-link"
+              href={`${GITHUB_URL}/issues`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Issues <ArrowUpRight size={13} />
+            </a>
+            <a
+              className="footer-link"
+              href="https://www.npmjs.com/package/audio-normalizer"
+              target="_blank"
+              rel="noreferrer"
+            >
+              npm <ArrowUpRight size={13} />
+            </a>
+          </nav>
+
+          <div className="footer-col footer-cli">
+            <h4>CLI</h4>
+            <CopyCommand command="npx audio-normalizer track.wav" />
+            <CopyCommand command="npx audio-normalizer ./sounds -p sfx" />
+          </div>
+        </div>
+
+        <div className="site-footer-inner footer-bottom">
+          <span>© {year} AudioNorm · MIT License</span>
+          <span className="mono footer-tech">ITU-R BS.1770 · EBU R128 · ffmpeg</span>
         </div>
       </footer>
-       </>
-      )}
 
       <div className="grain" />
     </div>
