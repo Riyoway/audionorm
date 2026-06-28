@@ -5,6 +5,7 @@ import {
   SlidersHorizontal,
   RefreshCw,
   Download,
+  MonitorDown,
 } from "lucide-react";
 import { PRESETS, getPreset, DEFAULT_PRESET_ID } from "@audio-normalizer/core";
 import { processFile, type ProcessResult } from "./lib/processor";
@@ -12,6 +13,7 @@ import type { BitDepth } from "./audio/encodeWav";
 import { Dropzone } from "./components/Dropzone";
 import { FileRow, type FileItem } from "./components/FileRow";
 import { Select } from "./components/Select";
+import { usePwaInstall } from "./hooks/usePwaInstall";
 
 const BIT_DEPTH_OPTIONS = [
   { value: "16", label: "16-bit PCM (smaller)" },
@@ -29,6 +31,7 @@ export function App() {
   itemsRef.current = items;
 
   const preset = useMemo(() => getPreset(presetId)!, [presetId]);
+  const { canInstall, promptInstall } = usePwaInstall();
 
   const update = useCallback((id: number, patch: Partial<FileItem>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
@@ -103,10 +106,18 @@ export function App() {
           Bring every clip to a consistent, optimal volume. Great for taming
           too-loud free sound effects and UI/button sounds.
         </p>
-        <p className="privacy">
-          <ShieldCheck size={15} />
-          Everything runs in your browser — your files are never uploaded.
-        </p>
+        <div className="header-badges">
+          <span className="privacy">
+            <ShieldCheck size={15} />
+            Runs in your browser — nothing is uploaded
+          </span>
+          {canInstall && (
+            <button className="btn-install" onClick={promptInstall}>
+              <MonitorDown size={16} />
+              Install app
+            </button>
+          )}
+        </div>
       </header>
 
       <section className="controls">

@@ -58,6 +58,28 @@ body {
   max-width: 560px;
 }
 
+.header-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-install {
+  background: linear-gradient(135deg, var(--accent), #7a6cff);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 7px 14px;
+  box-shadow: 0 4px 14px rgba(91, 140, 255, 0.35);
+}
+
+.btn-install:hover {
+  filter: brightness(1.08);
+}
+
 .privacy {
   display: inline-flex;
   align-items: center;
