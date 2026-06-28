@@ -21,6 +21,7 @@ import { Dropzone } from "./components/Dropzone";
 import { FileRow, type FileItem } from "./components/FileRow";
 import { Select } from "./components/Select";
 import { CopyCommand } from "./components/CopyCommand";
+import { DocsView } from "./components/DocsView";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 
 const GITHUB_URL = "https://github.com/Riyoway/audio-normalizer";
@@ -34,6 +35,7 @@ const BIT_DEPTH_OPTIONS = [
 let idCounter = 0;
 
 export function App() {
+  const [view, setView] = useState<"app" | "docs">("app");
   const [presetId, setPresetId] = useState(DEFAULT_PRESET_ID);
   const [bitDepth, setBitDepth] = useState<BitDepth>(24);
   const [items, setItems] = useState<FileItem[]>([]);
@@ -114,13 +116,28 @@ export function App() {
   return (
     <div className="app">
       <header className="app-bar">
-        <button className="app-bar-brand" onClick={() => window.scrollTo({ top: 0 })}>
+        <button
+          className="app-bar-brand"
+          onClick={() => {
+            setView("app");
+            window.scrollTo({ top: 0 });
+          }}
+        >
           <img src="/icon-192.png" alt="" className="app-bar-logo" />
           <span className="app-bar-title">
             Audio<b>Norm</b>
           </span>
         </button>
         <nav className="app-bar-nav">
+          <button
+            className={`nav-link${view === "docs" ? " active" : ""}`}
+            onClick={() => {
+              setView(view === "docs" ? "app" : "docs");
+              window.scrollTo({ top: 0 });
+            }}
+          >
+            Docs
+          </button>
           <a className="icon-link" href={GITHUB_URL} target="_blank" rel="noreferrer" aria-label="GitHub">
             <GitHubMark size={18} />
           </a>
@@ -133,6 +150,10 @@ export function App() {
         </nav>
       </header>
 
+      {view === "docs" ? (
+        <DocsView onBack={() => setView("app")} />
+      ) : (
+       <>
       <main className="app-main">
         <section className="hero">
           <span className="eyebrow">Loudness Normalizer · EBU R128</span>
@@ -255,6 +276,8 @@ export function App() {
           <CopyCommand command="npx audio-normalizer ./sounds -p sfx" />
         </div>
       </footer>
+       </>
+      )}
 
       <div className="grain" />
     </div>
