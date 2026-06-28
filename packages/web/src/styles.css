@@ -339,6 +339,8 @@ button:disabled {
   border: 1.5px solid var(--line);
   font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1;
+  text-align: center;
   color: var(--muted);
 }
 
