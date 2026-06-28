@@ -29,7 +29,7 @@ import { CopyCommand } from "./components/CopyCommand";
 import { DocsView } from "./components/DocsView";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 
-const GITHUB_URL = "https://github.com/Riyoway/audio-normalizer";
+const GITHUB_URL = "https://github.com/Riyoway/audionorm";
 
 const BIT_DEPTH_OPTIONS = [
   { value: "16", label: "16-bit PCM · smaller" },

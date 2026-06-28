@@ -1,6 +1,6 @@
 {
   "name": "audionorm",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Normalize audio files to an optimal loudness (LUFS / peak) from the command line. Bundles ffmpeg, so it just works with npx.",
   "type": "module",
   "bin": {
@@ -14,11 +14,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Riyoway/audio-normalizer.git",
+    "url": "git+https://github.com/Riyoway/audionorm.git",
     "directory": "packages/cli"
   },
-  "homepage": "https://github.com/Riyoway/audio-normalizer#readme",
-  "bugs": "https://github.com/Riyoway/audio-normalizer/issues",
+  "homepage": "https://github.com/Riyoway/audionorm#readme",
+  "bugs": "https://github.com/Riyoway/audionorm/issues",
   "keywords": [
     "audio",
     "loudness",
