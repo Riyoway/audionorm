@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"],
       manifest: {
-        name: "Audio Loudness Normalizer",
-        short_name: "Loudness",
+        name: "Audionorm",
+        short_name: "Audionorm",
         description:
           "Normalize audio files to an optimal, consistent loudness — right in your browser, fully offline. Nothing is uploaded.",
         theme_color: "#0a0a0b",
