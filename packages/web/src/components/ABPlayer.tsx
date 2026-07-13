@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
+import { useI18n } from "../i18n";
 
 interface Props {
   beforeUrl: string;
@@ -19,6 +20,7 @@ function fmtTime(sec: number): string {
  * position, so the volume difference is obvious.
  */
 export function ABPlayer({ beforeUrl, afterUrl }: Props) {
+  const { t } = useI18n();
   const beforeRef = useRef<HTMLAudioElement>(null);
   const afterRef = useRef<HTMLAudioElement>(null);
   const [active, setActive] = useState<"before" | "after">("after");
@@ -86,25 +88,25 @@ export function ABPlayer({ beforeUrl, afterUrl }: Props) {
         type="button"
         className="ab-play"
         onClick={togglePlay}
-        aria-label={playing ? "Pause" : "Play"}
+        aria-label={playing ? t("ab.pause") : t("ab.play")}
       >
         {playing ? <Pause size={16} /> : <Play size={16} />}
       </button>
 
-      <div className="ab-toggle" role="group" aria-label="Compare before and after">
+      <div className="ab-toggle" role="group">
         <button
           type="button"
           className={active === "before" ? "active" : ""}
           onClick={() => switchTo("before")}
         >
-          Before
+          {t("ab.before")}
         </button>
         <button
           type="button"
           className={active === "after" ? "active" : ""}
           onClick={() => switchTo("after")}
         >
-          After
+          {t("ab.after")}
         </button>
       </div>
 

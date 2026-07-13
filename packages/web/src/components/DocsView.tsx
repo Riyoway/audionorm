@@ -1,21 +1,22 @@
 import { ArrowLeft } from "lucide-react";
 import { PRESETS } from "@audio-normalizer/core";
 import { CopyCommand } from "./CopyCommand";
+import { useI18n } from "../i18n";
 
 interface Props {
   onBack: () => void;
 }
 
-const OPTIONS: { flag: string; desc: string }[] = [
-  { flag: "-p, --preset <id>", desc: "Loudness preset (default: streaming)" },
-  { flag: "--target <LUFS>", desc: "Override the target loudness for LUFS presets" },
-  { flag: "--peak <dB>", desc: "Override the target peak for peak presets" },
-  { flag: "-o, --out <dir>", desc: "Output directory (default: alongside each input)" },
-  { flag: "--suffix <str>", desc: 'Filename suffix for outputs (default: "-normalized")' },
-  { flag: "-f, --format <ext>", desc: "Output format: wav, mp3, flac, m4a, ogg (default: keep input)" },
-  { flag: "--analyze", desc: "Only measure and report, without writing files" },
-  { flag: "--list-presets", desc: "List the available presets and exit" },
-  { flag: "-h, --help", desc: "Show help" },
+const OPTIONS: { flag: string; key: string }[] = [
+  { flag: "-p, --preset <id>", key: "opt.preset" },
+  { flag: "--target <LUFS>", key: "opt.target" },
+  { flag: "--peak <dB>", key: "opt.peak" },
+  { flag: "-o, --out <dir>", key: "opt.out" },
+  { flag: "--suffix <str>", key: "opt.suffix" },
+  { flag: "-f, --format <ext>", key: "opt.format" },
+  { flag: "--analyze", key: "opt.analyze" },
+  { flag: "--list-presets", key: "opt.listpresets" },
+  { flag: "-h, --help", key: "opt.help" },
 ];
 
 function presetTarget(p: (typeof PRESETS)[number]): string {
@@ -23,49 +24,46 @@ function presetTarget(p: (typeof PRESETS)[number]): string {
 }
 
 export function DocsView({ onBack }: Props) {
+  const { t } = useI18n();
+
   return (
     <main className="app-main docs">
       <button className="btn-ghost docs-back" onClick={onBack}>
         <ArrowLeft size={16} />
-        Back to app
+        {t("nav.back")}
       </button>
 
       <header className="docs-hero">
-        <span className="eyebrow">Documentation</span>
-        <h1>Command-line usage</h1>
-        <p className="hero-sub">
-          The same loudness engine as the web app, for the terminal. It bundles its
-          own <code className="ic">ffmpeg</code>, so there's nothing to install. Run it
-          straight from <code className="ic">npx</code>.
-        </p>
+        <span className="eyebrow">{t("docs.eyebrow")}</span>
+        <h1>{t("docs.title")}</h1>
+        <p className="hero-sub">{t("docs.sub")}</p>
       </header>
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">$</span> Quick start
+          <span className="doc-h-i">$</span> {t("docs.qs")}
         </h2>
         <CopyCommand command="npx audionorm track.wav" />
-        <p className="doc-p">
-          Normalizes <code className="ic">track.wav</code> to −14 LUFS and writes
-          <code className="ic">track-normalized.wav</code> next to it.
-        </p>
+        <p className="doc-p">{t("docs.qs.p")}</p>
       </section>
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">#</span> Presets
+          <span className="doc-h-i">#</span> {t("docs.presets")}
         </h2>
         <div className="doc-table">
           <div className="doc-tr doc-th">
-            <span>Preset</span>
-            <span>Target</span>
-            <span>Best for</span>
+            <span>{t("docs.th.preset")}</span>
+            <span>{t("docs.th.target")}</span>
+            <span>{t("docs.th.best")}</span>
           </div>
           {PRESETS.map((p) => (
             <div className="doc-tr" key={p.id}>
               <span className="mono doc-id">{p.id}</span>
               <span className="mono doc-target">{presetTarget(p)}</span>
-              <span className="doc-use">{p.description}</span>
+              <span className="doc-use">
+                {t(`preset.${p.id}.desc`, undefined, p.description)}
+              </span>
             </div>
           ))}
         </div>
@@ -73,13 +71,13 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">⚙</span> Options
+          <span className="doc-h-i">⚙</span> {t("docs.options")}
         </h2>
         <dl className="opt-list">
           {OPTIONS.map((o) => (
             <div className="opt" key={o.flag}>
               <dt className="mono">{o.flag}</dt>
-              <dd>{o.desc}</dd>
+              <dd>{t(o.key)}</dd>
             </div>
           ))}
         </dl>
@@ -87,30 +85,23 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">▷</span> Examples
+          <span className="doc-h-i">▷</span> {t("docs.examples")}
         </h2>
-        <p className="doc-p">Fix a folder of too-loud UI sounds into a new folder:</p>
+        <p className="doc-p">{t("docs.ex.sfx")}</p>
         <CopyCommand command="npx audionorm ./sounds -p sfx -o ./sounds-fixed" />
-        <p className="doc-p">Batch a glob to podcast loudness:</p>
+        <p className="doc-p">{t("docs.ex.podcast")}</p>
         <CopyCommand command={'npx audionorm -p podcast "episodes/*.mp3"'} />
-        <p className="doc-p">Just measure, nothing written:</p>
+        <p className="doc-p">{t("docs.ex.analyze")}</p>
         <CopyCommand command="npx audionorm --analyze track.wav" />
-        <p className="doc-p">Custom target and convert to WAV:</p>
+        <p className="doc-p">{t("docs.ex.custom")}</p>
         <CopyCommand command="npx audionorm --target -12 song.flac -f wav" />
       </section>
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">?</span> How it works
+          <span className="doc-h-i">?</span> {t("docs.how")}
         </h2>
-        <p className="doc-p">
-          LUFS presets use a two-pass{" "}
-          <code className="ic">loudnorm</code> measurement (ITU-R BS.1770 / EBU R128) and
-          apply linear gain, pulling back automatically if it would push the true peak
-          past the ceiling, so it never clips. Peak presets (like{" "}
-          <code className="ic">sfx</code>) apply a single lossless gain change, which is
-          the right choice for very short clips where gated loudness is unreliable.
-        </p>
+        <p className="doc-p">{t("docs.how.p")}</p>
       </section>
     </main>
   );

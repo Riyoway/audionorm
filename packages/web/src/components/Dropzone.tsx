@@ -1,11 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import { UploadCloud } from "lucide-react";
+import { useI18n } from "../i18n";
 
 interface Props {
   onFiles: (files: File[]) => void;
 }
 
 export function Dropzone({ onFiles }: Props) {
+  const { t } = useI18n();
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -48,9 +50,10 @@ export function Dropzone({ onFiles }: Props) {
         <UploadCloud size={40} strokeWidth={1.6} />
       </div>
       <p className="dropzone-text">
-        Drag &amp; drop audio files here, or <span>click to browse</span>
+        {t("dz.main")}
+        <span>{t("dz.browse")}</span>
       </p>
-      <p className="dropzone-sub">WAV · MP3 · FLAC · M4A · OGG · Opus</p>
+      <p className="dropzone-sub">{t("dz.formats")}</p>
     </div>
   );
 }

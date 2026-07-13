@@ -11,14 +11,6 @@ import {
   ArrowUpRight,
   Trash2,
 } from "lucide-react";
-
-function GitHubMark({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.92 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" />
-    </svg>
-  );
-}
 import { PRESETS, getPreset, DEFAULT_PRESET_ID } from "@audio-normalizer/core";
 import { processFile, type ProcessResult } from "./lib/processor";
 import type { BitDepth } from "./audio/encodeWav";
@@ -27,19 +19,24 @@ import { FileRow, type FileItem } from "./components/FileRow";
 import { Select } from "./components/Select";
 import { CopyCommand } from "./components/CopyCommand";
 import { DocsView } from "./components/DocsView";
+import { LanguageMenu } from "./components/LanguageMenu";
 import { usePwaInstall } from "./hooks/usePwaInstall";
+import { useI18n } from "./i18n";
+
+function GitHubMark({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.92 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.21.7.82.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" />
+    </svg>
+  );
+}
 
 const GITHUB_URL = "https://github.com/Riyoway/audionorm";
-
-const BIT_DEPTH_OPTIONS = [
-  { value: "16", label: "16-bit PCM · smaller" },
-  { value: "24", label: "24-bit PCM · recommended" },
-  { value: "32", label: "32-bit float · lossless" },
-];
 
 let idCounter = 0;
 
 export function App() {
+  const { t } = useI18n();
   const [view, setView] = useState<"app" | "docs">("app");
   const [presetId, setPresetId] = useState(DEFAULT_PRESET_ID);
   const [bitDepth, setBitDepth] = useState<BitDepth>(24);
@@ -50,6 +47,12 @@ export function App() {
   const preset = useMemo(() => getPreset(presetId)!, [presetId]);
   const { canInstall, promptInstall } = usePwaInstall();
   const year = new Date().getFullYear();
+
+  const bitDepthOptions = [
+    { value: "16", label: t("fmt.16") },
+    { value: "24", label: t("fmt.24") },
+    { value: "32", label: t("fmt.32") },
+  ];
 
   const update = useCallback((id: number, patch: Partial<FileItem>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
@@ -121,16 +124,15 @@ export function App() {
 
   const doneCount = items.filter((it) => it.status === "done").length;
 
+  const goto = (v: "app" | "docs") => {
+    setView(v);
+    window.scrollTo({ top: 0 });
+  };
+
   return (
     <div className="app">
       <header className="app-bar">
-        <button
-          className="app-bar-brand"
-          onClick={() => {
-            setView("app");
-            window.scrollTo({ top: 0 });
-          }}
-        >
+        <button className="app-bar-brand" onClick={() => goto("app")}>
           <img src="/icon-192.png" alt="" className="app-bar-logo" />
           <span className="app-bar-title">
             Audio<b>Norm</b>
@@ -139,125 +141,124 @@ export function App() {
         <nav className="app-bar-nav">
           <button
             className={`nav-link${view === "docs" ? " active" : ""}`}
-            onClick={() => {
-              setView(view === "docs" ? "app" : "docs");
-              window.scrollTo({ top: 0 });
-            }}
+            onClick={() => goto(view === "docs" ? "app" : "docs")}
           >
-            Docs
+            {t("nav.docs")}
           </button>
+          <LanguageMenu />
           <a className="icon-link" href={GITHUB_URL} target="_blank" rel="noreferrer" aria-label="GitHub">
             <GitHubMark size={18} />
           </a>
           {canInstall && (
             <button className="btn-install" onClick={promptInstall}>
               <MonitorDown size={16} />
-              <span className="btn-install-label">Install</span>
+              <span className="btn-install-label">{t("btn.install")}</span>
             </button>
           )}
         </nav>
       </header>
 
       {view === "docs" ? (
-        <DocsView onBack={() => setView("app")} />
+        <DocsView onBack={() => goto("app")} />
       ) : (
         <main className="app-main">
-        <section className="hero">
-          <h1>Make every clip sit at the right volume.</h1>
-          <p className="hero-sub">
-            Free sound effects and UI clicks often blast out at full scale. Drop them
-            in, pick a target loudness, and download audio normalized to a consistent
-            level, entirely in your browser.
-          </p>
-        </section>
+          <section className="hero">
+            <h1>{t("hero.title")}</h1>
+            <p className="hero-sub">{t("hero.sub")}</p>
+          </section>
 
-        <section className="panel">
-          <div className="panel-head">
-            <span className="panel-index">1</span>
-            <span className="panel-title">Target</span>
-            <span className="panel-note">how loud &amp; what format</span>
-          </div>
-          <div className="controls">
-            <div className="control">
-              <label htmlFor="preset">
-                <Gauge size={14} />
-                Target loudness
-              </label>
-              <Select
-                id="preset"
-                ariaLabel="Target loudness"
-                value={presetId}
-                options={PRESETS.map((p) => ({ value: p.id, label: p.label }))}
-                onChange={setPresetId}
-              />
-              <p className="hint">{preset.description}</p>
-            </div>
-            <div className="control">
-              <label htmlFor="bitdepth">
-                <SlidersHorizontal size={14} />
-                Output format
-              </label>
-              <Select
-                id="bitdepth"
-                ariaLabel="Output bit depth"
-                value={String(bitDepth)}
-                options={BIT_DEPTH_OPTIONS}
-                onChange={(v) => setBitDepth(Number(v) as BitDepth)}
-              />
-              <p className="hint">Lossless WAV. Gain-only, no quality loss.</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="panel">
-          <div className="panel-head">
-            <span className="panel-index">2</span>
-            <span className="panel-title">Source</span>
-            <span className="panel-note">nothing is uploaded</span>
-          </div>
-          <Dropzone onFiles={addFiles} />
-        </section>
-
-        {items.length > 0 && (
           <section className="panel">
-            <div className="panel-head results-head">
-              <span className="panel-index">3</span>
-              <span className="panel-title">Output</span>
-              <span className="results-count">
-                {doneCount}/{items.length} ready
-              </span>
-              <div className="results-actions">
-                <button onClick={clearAll} className="btn-ghost">
-                  <Trash2 size={15} />
-                  Clear
-                </button>
-                <button onClick={reprocessAll} className="btn-secondary">
-                  <RefreshCw size={15} />
-                  Re-apply
-                </button>
-                <button
-                  onClick={downloadAll}
-                  className="btn-primary"
-                  disabled={doneCount === 0}
-                >
-                  <Download size={15} />
-                  Download all
-                </button>
+            <div className="panel-head">
+              <span className="panel-index">1</span>
+              <span className="panel-title">{t("panel.target.title")}</span>
+              <span className="panel-note">{t("panel.target.note")}</span>
+            </div>
+            <div className="controls">
+              <div className="control">
+                <label htmlFor="preset">
+                  <Gauge size={14} />
+                  {t("control.loudness")}
+                </label>
+                <Select
+                  id="preset"
+                  ariaLabel={t("control.loudness")}
+                  value={presetId}
+                  options={PRESETS.map((p) => ({
+                    value: p.id,
+                    label: t(`preset.${p.id}.label`, undefined, p.label),
+                  }))}
+                  onChange={setPresetId}
+                />
+                <p className="hint">
+                  {t(`preset.${preset.id}.desc`, undefined, preset.description)}
+                </p>
+              </div>
+              <div className="control">
+                <label htmlFor="bitdepth">
+                  <SlidersHorizontal size={14} />
+                  {t("control.format")}
+                </label>
+                <Select
+                  id="bitdepth"
+                  ariaLabel={t("control.format")}
+                  value={String(bitDepth)}
+                  options={bitDepthOptions}
+                  onChange={(v) => setBitDepth(Number(v) as BitDepth)}
+                />
+                <p className="hint">{t("hint.format")}</p>
               </div>
             </div>
-            <div className="file-list">
-              {items.map((item) => (
-                <FileRow
-                  key={item.id}
-                  item={item}
-                  onDownload={downloadOne}
-                  onRemove={removeItem}
-                />
-              ))}
-            </div>
           </section>
-        )}
-      </main>
+
+          <section className="panel">
+            <div className="panel-head">
+              <span className="panel-index">2</span>
+              <span className="panel-title">{t("panel.source.title")}</span>
+              <span className="panel-note">{t("panel.source.note")}</span>
+            </div>
+            <Dropzone onFiles={addFiles} />
+          </section>
+
+          {items.length > 0 && (
+            <section className="panel">
+              <div className="panel-head results-head">
+                <span className="panel-index">3</span>
+                <span className="panel-title">{t("panel.output.title")}</span>
+                <span className="results-count">
+                  {t("output.ready", { done: doneCount, total: items.length })}
+                </span>
+                <div className="results-actions">
+                  <button onClick={clearAll} className="btn-ghost">
+                    <Trash2 size={15} />
+                    {t("btn.clear")}
+                  </button>
+                  <button onClick={reprocessAll} className="btn-secondary">
+                    <RefreshCw size={15} />
+                    {t("btn.reapply")}
+                  </button>
+                  <button
+                    onClick={downloadAll}
+                    className="btn-primary"
+                    disabled={doneCount === 0}
+                  >
+                    <Download size={15} />
+                    {t("btn.downloadAll")}
+                  </button>
+                </div>
+              </div>
+              <div className="file-list">
+                {items.map((item) => (
+                  <FileRow
+                    key={item.id}
+                    item={item}
+                    onDownload={downloadOne}
+                    onRemove={removeItem}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+        </main>
       )}
 
       <footer className="site-footer">
@@ -269,52 +270,37 @@ export function App() {
                 Audio<b>Norm</b>
               </span>
             </div>
-            <p className="footer-tag">
-              Normalize audio to an optimal, consistent loudness, in your browser or
-              the terminal.
-            </p>
+            <p className="footer-tag">{t("footer.tag")}</p>
             <div className="footer-chips">
               <span>
-                <ShieldCheck size={13} /> No upload
+                <ShieldCheck size={13} /> {t("footer.chip.noupload")}
               </span>
               <span>
-                <CloudOff size={13} /> Offline
+                <CloudOff size={13} /> {t("footer.chip.offline")}
               </span>
               <span>
-                <Zap size={13} /> Free &amp; OSS
+                <Zap size={13} /> {t("footer.chip.free")}
               </span>
             </div>
           </div>
 
           <nav className="footer-col">
-            <h4>App</h4>
-            <button
-              className="footer-link"
-              onClick={() => {
-                setView("app");
-                window.scrollTo({ top: 0 });
-              }}
-            >
-              Normalizer
+            <h4>{t("footer.col.app")}</h4>
+            <button className="footer-link" onClick={() => goto("app")}>
+              {t("footer.link.normalizer")}
             </button>
-            <button
-              className="footer-link"
-              onClick={() => {
-                setView("docs");
-                window.scrollTo({ top: 0 });
-              }}
-            >
-              Docs
+            <button className="footer-link" onClick={() => goto("docs")}>
+              {t("nav.docs")}
             </button>
             {canInstall && (
               <button className="footer-link" onClick={promptInstall}>
-                Install app
+                {t("footer.link.install")}
               </button>
             )}
           </nav>
 
           <nav className="footer-col">
-            <h4>Code</h4>
+            <h4>{t("footer.col.code")}</h4>
             <a className="footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer">
               GitHub <ArrowUpRight size={13} />
             </a>
@@ -337,14 +323,14 @@ export function App() {
           </nav>
 
           <div className="footer-col footer-cli">
-            <h4>CLI</h4>
+            <h4>{t("footer.col.cli")}</h4>
             <CopyCommand command="npx audionorm track.wav" />
             <CopyCommand command="npx audionorm ./sounds -p sfx" />
           </div>
         </div>
 
         <div className="site-footer-inner footer-bottom">
-          <span>© {year} AudioNorm · MIT License</span>
+          <span>{t("footer.license", { year })}</span>
           <span className="mono footer-tech">ITU-R BS.1770 · EBU R128 · ffmpeg</span>
         </div>
       </footer>

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { Loader2, TriangleAlert, CircleAlert, Download, X } from "lucide-react";
 import type { ProcessResult } from "../lib/processor";
 import { ABPlayer } from "./ABPlayer";
+import { useI18n } from "../i18n";
 
 export interface FileItem {
   id: number;
@@ -29,6 +30,7 @@ function fmtDuration(sec: number): string {
 }
 
 export function FileRow({ item, onDownload, onRemove }: Props) {
+  const { t } = useI18n();
   const { file, status, result, error } = item;
 
   // Object URLs for A/B playback (original vs normalized). Revoked on unmount.
@@ -53,31 +55,32 @@ export function FileRow({ item, onDownload, onRemove }: Props) {
           </div>
           {result && (
             <div className="file-meta">
-              {fmtDuration(result.durationSec)} · {result.channels === 1 ? "mono" : "stereo"} ·{" "}
+              {fmtDuration(result.durationSec)} ·{" "}
+              {result.channels === 1 ? t("meta.mono") : t("meta.stereo")} ·{" "}
               {(result.sampleRate / 1000).toFixed(1)} kHz
             </div>
           )}
         </div>
 
         <div className="file-head-actions">
-          {status === "pending" && <span className="badge pending">Queued</span>}
+          {status === "pending" && <span className="badge pending">{t("status.queued")}</span>}
           {status === "processing" && (
             <span className="badge processing">
               <Loader2 size={13} className="spin" />
-              Analyzing…
+              {t("status.analyzing")}
             </span>
           )}
           {status === "error" && (
             <span className="badge error" title={error}>
               <TriangleAlert size={13} />
-              Error
+              {t("status.error")}
             </span>
           )}
           <button
             className="file-remove"
             onClick={() => onRemove(item.id)}
-            aria-label="Remove from list"
-            title="Remove"
+            aria-label={t("status.remove")}
+            title={t("status.remove")}
           >
             <X size={16} />
           </button>
@@ -88,26 +91,26 @@ export function FileRow({ item, onDownload, onRemove }: Props) {
         <>
           <div className="file-stats">
             <div className="stat">
-              <span className="stat-label">Loudness</span>
+              <span className="stat-label">{t("stat.loudness")}</span>
               <span className="stat-value">{fmtDb(result.measurement.integratedLufs)} LUFS</span>
             </div>
             <div className="stat">
-              <span className="stat-label">Peak</span>
+              <span className="stat-label">{t("stat.peak")}</span>
               <span className="stat-value">{fmtDb(result.measurement.truePeakDb)} dB</span>
             </div>
             <div className="stat">
-              <span className="stat-label">Gain applied</span>
+              <span className="stat-label">{t("stat.gain")}</span>
               <span className="stat-value accent">{fmtDb(result.plan.gainDb)} dB</span>
             </div>
             {result.plan.peakLimited && (
-              <span className="badge limited" title="Gain reduced to avoid clipping">
+              <span className="badge limited">
                 <CircleAlert size={13} />
-                peak-limited
+                {t("badge.limited")}
               </span>
             )}
             <button className="btn-download" onClick={() => onDownload(item)}>
               <Download size={15} />
-              Download
+              {t("btn.download")}
             </button>
           </div>
 

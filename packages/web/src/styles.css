@@ -224,6 +224,17 @@ button:disabled {
   color: var(--paper);
 }
 
+.lang {
+  position: relative;
+  display: inline-flex;
+}
+
+.lang-menu {
+  left: auto;
+  right: 0;
+  min-width: 150px;
+}
+
 .btn-install {
   background: var(--accent);
   color: var(--on-accent);
