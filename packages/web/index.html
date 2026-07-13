@@ -7,19 +7,105 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#0b0b0d" />
-    <title>Audionorm</title>
+    <title>Audionorm — Audio Loudness Normalizer (LUFS / EBU R128)</title>
+    <link rel="canonical" href="https://audionorm.riyo.me/" />
     <meta
       name="description"
-      content="Normalize audio files to an optimal loudness right in your browser. Nothing is uploaded."
+      content="Free audio loudness normalizer. Level audio to a consistent LUFS target (EBU R128 / ITU-R BS.1770) or peak, in your browser or via npx audionorm. Fixes too-loud sound effects. Nothing uploaded."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Audionorm" />
+    <meta property="og:site_name" content="Audionorm" />
+    <meta property="og:url" content="https://audionorm.riyo.me/" />
+    <meta property="og:title" content="Audionorm — Audio Loudness Normalizer (LUFS / EBU R128)" />
     <meta
       property="og:description"
-      content="Normalize audio files to an optimal, consistent loudness right in your browser. Nothing is uploaded."
+      content="Normalize audio to a consistent loudness (LUFS / EBU R128) or peak, right in your browser or via npx. Tames too-loud free sound effects. Nothing uploaded."
     />
-    <meta property="og:image" content="/icon-512.png" />
+    <meta property="og:image" content="https://audionorm.riyo.me/icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="Audionorm app icon" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Audionorm — Audio Loudness Normalizer" />
+    <meta
+      name="twitter:description"
+      content="Normalize audio to a consistent loudness (LUFS / EBU R128) in your browser or via npx. Nothing uploaded."
+    />
+    <meta name="twitter:image" content="https://audionorm.riyo.me/icon-512.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Audionorm",
+        "url": "https://audionorm.riyo.me/",
+        "description": "Free tool to normalize audio to an optimal, consistent loudness using LUFS (EBU R128 / ITU-R BS.1770) or peak normalization. Runs entirely in the browser; also available as the npx audionorm CLI.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (modern web browser)",
+        "browserRequirements": "Requires JavaScript and the Web Audio API",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "LUFS loudness normalization (EBU R128 / ITU-R BS.1770)",
+          "Peak normalization for short sound effects",
+          "True-peak safe — never clips",
+          "Batch processing with before/after A/B preview",
+          "Client-side — no files are uploaded",
+          "Installable PWA, works offline"
+        ],
+        "sameAs": [
+          "https://github.com/Riyoway/audionorm",
+          "https://www.npmjs.com/package/audionorm"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is audio loudness normalization?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Audio loudness normalization measures the perceived loudness of a file in LUFS (Loudness Units relative to Full Scale) using the ITU-R BS.1770 / EBU R128 standard, then applies gain so every clip hits the same target — for example −14 LUFS. Unlike peak normalization, it matches how loud audio actually sounds, not just its highest sample."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I fix a sound effect that is too loud?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use Audionorm's 'sfx' preset, which peak-normalizes each clip to about −3 dB. For very short clips like button clicks or notifications, gated LUFS is unreliable, so peak normalization brings every effect to a consistent, not-too-loud level. In the CLI: npx audionorm ./sounds -p sfx."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What LUFS should I target?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use −14 LUFS for streaming and music (the Spotify / YouTube / Apple Music level), −16 LUFS for podcasts and spoken word, and −23 LUFS for EBU R128 broadcast. Audionorm ships presets for each and keeps the true peak below a ceiling so audio never clips."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Audionorm upload my audio files?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The web app processes audio entirely in your browser with the Web Audio API — files never leave your device. It also works offline once loaded."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a command-line version?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Run npx audionorm track.wav — it bundles ffmpeg, so there is nothing to install, and it batch-processes folders using the same LUFS and peak presets as the web app."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
