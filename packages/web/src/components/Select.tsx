@@ -27,6 +27,8 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const listId = id ? `${id}-listbox` : "select-listbox";
+  const activeId = open ? `${listId}-opt-${highlight}` : undefined;
 
   const visible = useMemo(() => {
     if (!searchable || !query.trim()) return options;
@@ -144,6 +146,8 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={listId}
+        aria-activedescendant={open && !searchable ? activeId : undefined}
         aria-label={ariaLabel}
         onClick={() => (open ? close() : openMenu())}
         onKeyDown={triggerKeyDown}
@@ -160,6 +164,10 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
               <input
                 ref={searchRef}
                 type="text"
+                role="combobox"
+                aria-expanded={open}
+                aria-controls={listId}
+                aria-activedescendant={activeId}
                 value={query}
                 placeholder={t("search.placeholder")}
                 aria-label={t("search.placeholder")}
@@ -171,7 +179,7 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
               />
             </div>
           )}
-          <ul className="select-list" role="listbox" ref={listRef} tabIndex={-1}>
+          <ul className="select-list" id={listId} role="listbox" ref={listRef} tabIndex={-1}>
             {visible.length === 0 && <li className="select-empty">{t("select.empty")}</li>}
             {visible.map((opt, i) => {
               const isSelected = opt.value === value;
@@ -185,6 +193,7 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
                   )}
                   <li
                     role="option"
+                    id={`${listId}-opt-${i}`}
                     data-index={i}
                     aria-selected={isSelected}
                     className={

@@ -44,7 +44,8 @@ export function App() {
   const { t, lang } = useI18n();
   const [view, setView] = useState<"app" | "docs">("app");
   const [presetId, setPresetId] = useState(DEFAULT_PRESET_ID);
-  const [customLufs, setCustomLufs] = useState<number>(-14);
+  // Kept as a string so an empty / partial ("-") field never coerces to 0.
+  const [customLufs, setCustomLufs] = useState<string>("-14");
   const [bitDepth, setBitDepth] = useState<BitDepth>(24);
   const [items, setItems] = useState<FileItem[]>([]);
   const itemsRef = useRef(items);
@@ -53,7 +54,9 @@ export function App() {
   // The active preset. "custom" builds a LUFS preset from the entered value.
   const preset = useMemo<Preset>(() => {
     if (presetId === "custom") {
-      const v = Number.isFinite(customLufs) ? customLufs : -14;
+      // Empty, "-", positive or absurd values fall back / clamp to a sane target.
+      const parsed = parseFloat(customLufs);
+      const v = Number.isFinite(parsed) && parsed < 0 ? Math.max(-60, parsed) : -14;
       return {
         id: "custom",
         label: `Custom (${v} LUFS)`,
@@ -234,7 +237,7 @@ export function App() {
                       value={customLufs}
                       aria-label={t("target.customAria")}
                       placeholder={t("target.customPlaceholder")}
-                      onChange={(e) => setCustomLufs(Number(e.target.value))}
+                      onChange={(e) => setCustomLufs(e.target.value)}
                     />
                   )}
                 </div>
