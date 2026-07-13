@@ -4,7 +4,7 @@
 
 # audionorm
 
-**Normalize audio to an optimal, consistent loudness — in your browser or the terminal.**
+**Normalize audio to an optimal, consistent loudness, in your browser or the terminal.**
 
 So a clip you grabbed from a free sound library doesn't blast out at full volume,
 and your app's UI / button sounds all sit at the same comfortable level.
@@ -33,9 +33,9 @@ and your app's UI / button sounds all sit at the same comfortable level.
 
 ## ✨ What it does
 
-Loudness is **perceptual**, not just peak level — two files with the same peak can sound
+Loudness is **perceptual**, not just peak level. Two files with the same peak can sound
 very different in volume. `audionorm` measures **integrated loudness in LUFS**
-(ITU-R BS.1770 / EBU R128 — the same standard Spotify, YouTube and broadcasters use) and
+(ITU-R BS.1770 / EBU R128, the same standard Spotify, YouTube and broadcasters use) and
 applies the gain needed to hit your target, while keeping the **true peak** under a
 ceiling so it never clips.
 
@@ -48,16 +48,16 @@ not-too-loud peak.
 | 🎚️ **LUFS normalization** | EBU R128 / ITU-R BS.1770 integrated loudness |
 | 🔊 **Tames loud SFX** | Dedicated `sfx` preset for UI / button sounds |
 | 🛡️ **True-peak safe** | Pulls back gain automatically to avoid clipping |
-| 💎 **Quality-preserving** | Gain-only; lossless WAV / FLAC, high-bitrate lossy |
-| 🔒 **Private** | Web app runs 100% in the browser — nothing uploaded |
-| 📦 **Zero-install CLI** | Bundles ffmpeg; just `npx audionorm` |
+| 💎 **Quality-preserving** | Gain-only, lossless WAV / FLAC, high-bitrate lossy |
+| 🔒 **Private** | Web app runs 100% in the browser, nothing uploaded |
+| 📦 **Zero-install CLI** | Bundles ffmpeg, just `npx audionorm` |
 | 📲 **Installable PWA** | Works offline once loaded |
 
 ## 🖥️ Two ways to use it
 
-- **Web app** — drag & drop, pick a target, compare *before / after*, download. Nothing
+- **Web app**: drag & drop, pick a target, compare *before / after*, download. Nothing
   is uploaded. → **https://audionorm.riyo.me**
-- **CLI** — batch-process folders from the terminal with `npx audionorm`.
+- **CLI**: batch-process folders from the terminal with `npx audionorm`.
 
 ---
 
@@ -73,7 +73,7 @@ npx audionorm ./sounds -p sfx -o ./sounds-fixed
 # Batch a glob to podcast loudness
 npx audionorm -p podcast "episodes/*.mp3"
 
-# Just measure — don't write anything
+# Just measure, nothing written
 npx audionorm --analyze track.wav
 
 # Custom target and convert to WAV
@@ -84,7 +84,7 @@ npx audionorm --target -12 song.flac -f wav
 
 | id          | Target      | Best for                                          |
 | ----------- | ----------- | ------------------------------------------------- |
-| `streaming` | −14 LUFS    | General use, music — Spotify/YouTube level        |
+| `streaming` | −14 LUFS    | General use, music (Spotify/YouTube level)        |
 | `podcast`   | −16 LUFS    | Voice, spoken word                                |
 | `broadcast` | −23 LUFS    | EBU R128 broadcast                                |
 | `loud`      | −9 LUFS     | Hot master, maximum perceived loudness            |
@@ -100,7 +100,7 @@ npx audionorm --target -12 song.flac -f wav
 -o, --out <dir>       Output directory (default: alongside each input)
     --suffix <str>    Filename suffix for outputs (default: "-normalized")
 -f, --format <ext>    Output format: wav, mp3, flac, m4a, ogg (default: keep input)
-    --analyze         Only measure and report — don't write files
+    --analyze         Only measure and report, without writing files
     --list-presets    List the available presets and exit
 -h, --help            Show help
 ```
@@ -111,7 +111,7 @@ npx audionorm --target -12 song.flac -f wav
 
 LUFS presets use ffmpeg's two-pass `loudnorm` (linear mode) for accurate, transparent
 gain, pulling back automatically if it would push the true peak past the ceiling. Peak
-presets apply a single lossless gain change — the right choice for very short clips where
+presets apply a single lossless gain change, the right choice for very short clips where
 gated loudness is unreliable. The web app implements the same ITU-R BS.1770 K-weighted
 measurement in pure TypeScript and processes audio entirely client-side via the Web Audio
 API.

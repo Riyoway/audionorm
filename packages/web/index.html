@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#0b0b0d" />
-    <title>Audionorm — Audio Loudness Normalizer (LUFS / EBU R128)</title>
+    <title>Audionorm: Audio Loudness Normalizer (LUFS / EBU R128)</title>
     <link rel="canonical" href="https://audionorm.riyo.me/" />
     <meta
       name="description"
@@ -16,7 +16,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Audionorm" />
     <meta property="og:url" content="https://audionorm.riyo.me/" />
-    <meta property="og:title" content="Audionorm — Audio Loudness Normalizer (LUFS / EBU R128)" />
+    <meta property="og:title" content="Audionorm: Audio Loudness Normalizer (LUFS / EBU R128)" />
     <meta
       property="og:description"
       content="Normalize audio to a consistent loudness (LUFS / EBU R128) or peak, right in your browser or via npx. Tames too-loud free sound effects. Nothing uploaded."
@@ -26,7 +26,7 @@
     <meta property="og:image:height" content="512" />
     <meta property="og:image:alt" content="Audionorm app icon" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Audionorm — Audio Loudness Normalizer" />
+    <meta name="twitter:title" content="Audionorm: Audio Loudness Normalizer" />
     <meta
       name="twitter:description"
       content="Normalize audio to a consistent loudness (LUFS / EBU R128) in your browser or via npx. Nothing uploaded."
@@ -38,7 +38,7 @@
         "@type": "WebApplication",
         "name": "Audionorm",
         "url": "https://audionorm.riyo.me/",
-        "description": "Free tool to normalize audio to an optimal, consistent loudness using LUFS (EBU R128 / ITU-R BS.1770) or peak normalization. Runs entirely in the browser; also available as the npx audionorm CLI.",
+        "description": "Free tool to normalize audio to an optimal, consistent loudness using LUFS (EBU R128 / ITU-R BS.1770) or peak normalization. Runs entirely in the browser. Also available as the npx audionorm CLI.",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Any (modern web browser)",
         "browserRequirements": "Requires JavaScript and the Web Audio API",
@@ -47,9 +47,9 @@
         "featureList": [
           "LUFS loudness normalization (EBU R128 / ITU-R BS.1770)",
           "Peak normalization for short sound effects",
-          "True-peak safe — never clips",
+          "True-peak safe, never clips",
           "Batch processing with before/after A/B preview",
-          "Client-side — no files are uploaded",
+          "Client-side, no files are uploaded",
           "Installable PWA, works offline"
         ],
         "sameAs": [
@@ -68,7 +68,7 @@
             "name": "What is audio loudness normalization?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Audio loudness normalization measures the perceived loudness of a file in LUFS (Loudness Units relative to Full Scale) using the ITU-R BS.1770 / EBU R128 standard, then applies gain so every clip hits the same target — for example −14 LUFS. Unlike peak normalization, it matches how loud audio actually sounds, not just its highest sample."
+              "text": "Audio loudness normalization measures the perceived loudness of a file in LUFS (Loudness Units relative to Full Scale) using the ITU-R BS.1770 / EBU R128 standard, then applies gain so every clip hits the same target, for example −14 LUFS. Unlike peak normalization, it matches how loud audio actually sounds, not just its highest sample."
             }
           },
           {
@@ -92,7 +92,7 @@
             "name": "Does Audionorm upload my audio files?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. The web app processes audio entirely in your browser with the Web Audio API — files never leave your device. It also works offline once loaded."
+              "text": "No. The web app processes audio entirely in your browser with the Web Audio API, so files never leave your device. It also works offline once loaded."
             }
           },
           {
@@ -100,7 +100,7 @@
             "name": "Is there a command-line version?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Run npx audionorm track.wav — it bundles ffmpeg, so there is nothing to install, and it batch-processes folders using the same LUFS and peak presets as the web app."
+              "text": "Yes. Run npx audionorm track.wav. It bundles ffmpeg, so there is nothing to install, and it batch-processes folders using the same LUFS and peak presets as the web app."
             }
           }
         ]

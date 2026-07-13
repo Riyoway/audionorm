@@ -167,7 +167,7 @@ export function App() {
           <p className="hero-sub">
             Free sound effects and UI clicks often blast out at full scale. Drop them
             in, pick a target loudness, and download audio normalized to a consistent
-            level — entirely in your browser.
+            level, entirely in your browser.
           </p>
         </section>
 
@@ -204,7 +204,7 @@ export function App() {
                 options={BIT_DEPTH_OPTIONS}
                 onChange={(v) => setBitDepth(Number(v) as BitDepth)}
               />
-              <p className="hint">Lossless WAV. Gain-only — no quality loss.</p>
+              <p className="hint">Lossless WAV. Gain-only, no quality loss.</p>
             </div>
           </div>
         </section>
@@ -270,7 +270,7 @@ export function App() {
               </span>
             </div>
             <p className="footer-tag">
-              Normalize audio to an optimal, consistent loudness — in your browser or
+              Normalize audio to an optimal, consistent loudness, in your browser or
               the terminal.
             </p>
             <div className="footer-chips">

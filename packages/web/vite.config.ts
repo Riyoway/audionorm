@@ -14,7 +14,7 @@ export default defineConfig({
         name: "Audionorm",
         short_name: "Audionorm",
         description:
-          "Normalize audio files to an optimal, consistent loudness — right in your browser, fully offline. Nothing is uploaded.",
+          "Normalize audio files to an optimal, consistent loudness, right in your browser, fully offline. Nothing is uploaded.",
         theme_color: "#0a0a0b",
         background_color: "#0a0a0b",
         display: "standalone",

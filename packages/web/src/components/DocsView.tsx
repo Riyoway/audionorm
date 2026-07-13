@@ -13,7 +13,7 @@ const OPTIONS: { flag: string; desc: string }[] = [
   { flag: "-o, --out <dir>", desc: "Output directory (default: alongside each input)" },
   { flag: "--suffix <str>", desc: 'Filename suffix for outputs (default: "-normalized")' },
   { flag: "-f, --format <ext>", desc: "Output format: wav, mp3, flac, m4a, ogg (default: keep input)" },
-  { flag: "--analyze", desc: "Only measure and report — don't write files" },
+  { flag: "--analyze", desc: "Only measure and report, without writing files" },
   { flag: "--list-presets", desc: "List the available presets and exit" },
   { flag: "-h, --help", desc: "Show help" },
 ];
@@ -35,7 +35,7 @@ export function DocsView({ onBack }: Props) {
         <h1>Command-line usage</h1>
         <p className="hero-sub">
           The same loudness engine as the web app, for the terminal. It bundles its
-          own <code className="ic">ffmpeg</code>, so there's nothing to install — run it
+          own <code className="ic">ffmpeg</code>, so there's nothing to install. Run it
           straight from <code className="ic">npx</code>.
         </p>
       </header>
@@ -93,7 +93,7 @@ export function DocsView({ onBack }: Props) {
         <CopyCommand command="npx audionorm ./sounds -p sfx -o ./sounds-fixed" />
         <p className="doc-p">Batch a glob to podcast loudness:</p>
         <CopyCommand command={'npx audionorm -p podcast "episodes/*.mp3"'} />
-        <p className="doc-p">Just measure — don't write anything:</p>
+        <p className="doc-p">Just measure, nothing written:</p>
         <CopyCommand command="npx audionorm --analyze track.wav" />
         <p className="doc-p">Custom target and convert to WAV:</p>
         <CopyCommand command="npx audionorm --target -12 song.flac -f wav" />
@@ -107,7 +107,7 @@ export function DocsView({ onBack }: Props) {
           LUFS presets use a two-pass{" "}
           <code className="ic">loudnorm</code> measurement (ITU-R BS.1770 / EBU R128) and
           apply linear gain, pulling back automatically if it would push the true peak
-          past the ceiling — so it never clips. Peak presets (like{" "}
+          past the ceiling, so it never clips. Peak presets (like{" "}
           <code className="ic">sfx</code>) apply a single lossless gain change, which is
           the right choice for very short clips where gated loudness is unreliable.
         </p>
