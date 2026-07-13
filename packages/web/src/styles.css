@@ -1,7 +1,7 @@
 /* =========================================================================
-   Audio Normalizer — monochrome console
-   Neutral grayscale surfaces · a single blue/violet accent, used sparingly
-   Display: Bricolage Grotesque · Body: Archivo · Readouts: JetBrains Mono
+   Audionorm — Apple-style dark
+   Apple system grays · system blue accent · translucent materials · soft depth
+   System font (SF/Segoe/Roboto) · press feedback · rounded cards
    ========================================================================= */
 
 :root {
@@ -9,30 +9,31 @@
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
 
-  /* neutral monochrome ramp */
-  --ink: #0a0a0b;
-  --ink-2: #0e0e10;
-  --panel: #141416;
-  --panel-hi: #1b1b1e;
-  --line: #2a2a2e;
-  --line-soft: #202023;
+  /* Apple dark system grays */
+  --ink: #0b0b0d;
+  --ink-2: #161618;
+  --panel: #1c1c1e;
+  --panel-hi: #2c2c2e;
+  --line: rgba(255, 255, 255, 0.11);
+  --line-soft: rgba(255, 255, 255, 0.07);
 
-  --paper: #ededf0;
-  --muted: #8a8a92;
-  --faint: #585860;
+  --paper: #f5f5f7;
+  --muted: #9a9aa0;
+  --faint: #6a6a70;
 
-  /* the one accent — switch blue <-> violet here */
-  --accent: #6f87ff;
-  --accent-deep: #5163d6;
-  --accent-soft: rgba(111, 135, 255, 0.14);
-  --accent-glow: rgba(111, 135, 255, 0.4);
-  --on-accent: #07070a;
+  /* Apple system blue */
+  --accent: #0a84ff;
+  --accent-deep: #0060df;
+  --accent-soft: rgba(10, 132, 255, 0.16);
+  --accent-glow: rgba(10, 132, 255, 0.45);
+  --on-accent: #ffffff;
 
   /* error: stays monochrome, just brighter */
   --alert: #d7d7dd;
 
-  --r: 12px;
-  --r-sm: 8px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --r: 16px;
+  --r-sm: 11px;
   --maxw: 940px;
 }
 
@@ -49,9 +50,7 @@ body {
   font-family: var(--font-body);
   color: var(--paper);
   background-color: var(--ink);
-  background-image:
-    radial-gradient(900px 460px at 50% -140px, var(--accent-soft), transparent 70%),
-    linear-gradient(var(--ink), var(--ink-2));
+  background-image: linear-gradient(180deg, #17171a 0%, var(--ink) 320px);
   background-attachment: fixed;
   min-height: 100vh;
   overscroll-behavior-y: none;
@@ -91,12 +90,12 @@ button {
   gap: 8px;
   color: var(--paper);
   background: var(--panel-hi);
-  transition: transform 0.06s ease, filter 0.15s ease, border-color 0.15s ease,
+  transition: transform 0.12s var(--ease), filter 0.15s ease, border-color 0.15s ease,
     background 0.15s ease, color 0.15s ease;
 }
 
 button:active {
-  transform: translateY(1px);
+  transform: scale(0.96);
 }
 
 button:disabled {
@@ -155,9 +154,9 @@ button:disabled {
   gap: 16px;
   padding: 13px 22px;
   padding-top: calc(13px + env(safe-area-inset-top));
-  background: rgba(10, 10, 11, 0.72);
-  backdrop-filter: blur(16px) saturate(120%);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  background: rgba(11, 11, 13, 0.7);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
   border-bottom: 1px solid var(--line);
 }
 
@@ -174,9 +173,8 @@ button:disabled {
 .app-bar-logo {
   width: 30px;
   height: 30px;
-  border-radius: 7px;
+  border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--line);
-  filter: grayscale(1) contrast(1.02);
 }
 
 .app-bar-title {
@@ -289,18 +287,18 @@ button:disabled {
 
 .hero h1 {
   font-weight: 700;
-  font-size: clamp(1.7rem, 4vw, 2.4rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  margin: 0 0 12px;
-  max-width: 22ch;
+  font-size: clamp(2rem, 5.2vw, 3.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  max-width: 18ch;
 }
 
 .hero-sub {
   color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.6;
-  max-width: 56ch;
+  font-size: 1.08rem;
+  line-height: 1.55;
+  max-width: 58ch;
   margin: 0;
 }
 
@@ -308,12 +306,12 @@ button:disabled {
 
 .panel {
   position: relative;
-  background: linear-gradient(180deg, rgba(27, 27, 30, 0.5), var(--panel));
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--r);
-  padding: 22px;
-  margin-bottom: 20px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 14px 34px -20px rgba(0, 0, 0, 0.7);
 }
 
 /* lift the panel whose dropdown is open so the menu paints above later panels */
@@ -442,10 +440,12 @@ button:disabled {
   margin: 0;
   padding: 6px;
   list-style: none;
-  background: var(--panel-hi);
+  background: rgba(44, 44, 46, 0.8);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   max-height: 300px;
   overflow-y: auto;
   animation: rise 0.12s ease;
@@ -481,16 +481,15 @@ button:disabled {
 .dropzone {
   border: 1.5px dashed var(--line);
   border-radius: var(--r);
-  padding: 46px 20px;
+  padding: 48px 20px;
   text-align: center;
   cursor: pointer;
-  background: repeating-linear-gradient(
-      -45deg,
-      transparent 0 14px,
-      rgba(255, 255, 255, 0.012) 14px 28px
-    ),
-    var(--ink-2);
-  transition: border-color 0.15s, background-color 0.15s;
+  background: var(--ink-2);
+  transition: border-color 0.15s, background-color 0.15s, transform 0.12s var(--ease);
+}
+
+.dropzone:active {
+  transform: scale(0.99);
 }
 
 .dropzone:hover,
@@ -1031,9 +1030,8 @@ button:disabled {
 .footer-logo {
   width: 30px;
   height: 30px;
-  border-radius: 7px;
+  border-radius: 8px;
   box-shadow: 0 0 0 1px var(--line);
-  filter: grayscale(1) contrast(1.02);
 }
 
 .footer-name {
