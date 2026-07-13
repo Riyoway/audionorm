@@ -11,7 +11,12 @@ import {
   ArrowUpRight,
   Trash2,
 } from "lucide-react";
-import { PRESETS, getPreset, DEFAULT_PRESET_ID } from "@audio-normalizer/core";
+import {
+  getPreset,
+  DEFAULT_PRESET_ID,
+  presetsByCategory,
+  type Preset,
+} from "@audio-normalizer/core";
 import { processFile, type ProcessResult } from "./lib/processor";
 import type { BitDepth } from "./audio/encodeWav";
 import { Dropzone } from "./components/Dropzone";
@@ -36,15 +41,32 @@ const GITHUB_URL = "https://github.com/Riyoway/audionorm";
 let idCounter = 0;
 
 export function App() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [view, setView] = useState<"app" | "docs">("app");
   const [presetId, setPresetId] = useState(DEFAULT_PRESET_ID);
+  const [customLufs, setCustomLufs] = useState<number>(-14);
   const [bitDepth, setBitDepth] = useState<BitDepth>(24);
   const [items, setItems] = useState<FileItem[]>([]);
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  const preset = useMemo(() => getPreset(presetId)!, [presetId]);
+  // The active preset. "custom" builds a LUFS preset from the entered value.
+  const preset = useMemo<Preset>(() => {
+    if (presetId === "custom") {
+      const v = Number.isFinite(customLufs) ? customLufs : -14;
+      return {
+        id: "custom",
+        label: `Custom (${v} LUFS)`,
+        description: "",
+        method: "lufs",
+        targetLufs: v,
+        truePeak: -1,
+        category: "Custom",
+      };
+    }
+    return getPreset(presetId) ?? getPreset(DEFAULT_PRESET_ID)!;
+  }, [presetId, customLufs]);
+
   const { canInstall, promptInstall } = usePwaInstall();
   const year = new Date().getFullYear();
 
@@ -53,6 +75,20 @@ export function App() {
     { value: "24", label: t("fmt.24") },
     { value: "32", label: t("fmt.32") },
   ];
+
+  // Grouped, searchable target list: general presets + per-service targets.
+  const targetOptions = useMemo(() => {
+    const opts: { value: string; label: string; group: string }[] = [];
+    for (const { category, presets } of presetsByCategory()) {
+      const group = t(`cat.${category}`, undefined, category);
+      for (const p of presets) {
+        opts.push({ value: p.id, label: t(`preset.${p.id}.label`, undefined, p.label), group });
+      }
+    }
+    opts.push({ value: "custom", label: t("target.custom"), group: t("cat.Custom", undefined, "Custom") });
+    return opts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   const update = useCallback((id: number, patch: Partial<FileItem>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
@@ -179,18 +215,46 @@ export function App() {
                   <Gauge size={14} />
                   {t("control.loudness")}
                 </label>
-                <Select
-                  id="preset"
-                  ariaLabel={t("control.loudness")}
-                  value={presetId}
-                  options={PRESETS.map((p) => ({
-                    value: p.id,
-                    label: t(`preset.${p.id}.label`, undefined, p.label),
-                  }))}
-                  onChange={setPresetId}
-                />
+                <div className="target-row">
+                  <Select
+                    id="preset"
+                    ariaLabel={t("control.loudness")}
+                    value={presetId}
+                    options={targetOptions}
+                    onChange={setPresetId}
+                    searchable
+                  />
+                  {presetId === "custom" && (
+                    <input
+                      className="text-input"
+                      type="number"
+                      min={-40}
+                      max={0}
+                      step={0.5}
+                      value={customLufs}
+                      aria-label={t("target.customAria")}
+                      placeholder={t("target.customPlaceholder")}
+                      onChange={(e) => setCustomLufs(Number(e.target.value))}
+                    />
+                  )}
+                </div>
                 <p className="hint">
-                  {t(`preset.${preset.id}.desc`, undefined, preset.description)}
+                  {presetId === "custom"
+                    ? t("hint.custom")
+                    : t(`preset.${preset.id}.desc`, undefined, preset.description)}
+                  {preset.sourceUrl && (
+                    <>
+                      {" · "}
+                      <a
+                        className="hint-src"
+                        href={preset.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {t("word.source")} ↗
+                      </a>
+                    </>
+                  )}
                 </p>
               </div>
               <div className="control">

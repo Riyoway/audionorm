@@ -33,6 +33,13 @@ const en: Dict = {
   "control.loudness": "Target loudness",
   "control.format": "Output format",
   "hint.format": "Lossless WAV. Gain-only, no quality loss.",
+  "search.placeholder": "Search services…",
+  "select.empty": "No matches",
+  "target.custom": "Custom LUFS…",
+  "target.customAria": "Custom loudness target in LUFS",
+  "target.customPlaceholder": "-14",
+  "hint.custom": "Set your own integrated-loudness target in LUFS (true peak -1 dBTP).",
+  "word.source": "source",
   "output.ready": "{done}/{total} ready",
   "btn.clear": "Clear",
   "btn.reapply": "Re-apply",
@@ -116,6 +123,19 @@ const ja: Dict = {
   "control.loudness": "目標ラウドネス",
   "control.format": "出力形式",
   "hint.format": "ロスレスWAV。ゲイン調整のみで音質劣化なし。",
+  "search.placeholder": "サービスを検索…",
+  "select.empty": "該当なし",
+  "target.custom": "カスタム LUFS…",
+  "target.customAria": "カスタムのラウドネス目標（LUFS）",
+  "target.customPlaceholder": "-14",
+  "hint.custom": "任意の積分ラウドネス目標をLUFSで指定（トゥルーピーク -1 dBTP）。",
+  "word.source": "出典",
+  "cat.General": "一般",
+  "cat.Music streaming": "音楽ストリーミング",
+  "cat.Video & social": "動画・SNS",
+  "cat.Podcast & audiobook": "ポッドキャスト・オーディオブック",
+  "cat.Broadcast & cinema": "放送・シネマ",
+  "cat.Custom": "カスタム",
   "output.ready": "{done}/{total} 完了",
   "btn.clear": "クリア",
   "btn.reapply": "再適用",
@@ -201,6 +221,26 @@ const ja: Dict = {
   "preset.sfx.label": "UI / ボタン効果音 (-3 dB ピーク)",
   "preset.sfx.desc":
     "短いアプリ効果音（クリックや通知）向け。爆音の効果音を抑え、全クリップを一定ピークに揃えます。ボタン音が大きすぎる問題におすすめ。",
+
+  // service presets (labels stay in English; descriptions localized)
+  "preset.spotify.desc":
+    "Spotify の再生ラウドネス基準。これに合わせるとSpotifyで音量を下げられません。",
+  "preset.apple-music.desc": "Apple Music の Sound Check 基準。多くのサービスより控えめ。",
+  "preset.youtube.desc": "YouTube / YouTube Music の再生基準。",
+  "preset.amazon-music.desc": "Amazon Music 基準。ピークは厳しめの -2 dBTP。",
+  "preset.tidal.desc": "Tidal の再生基準。",
+  "preset.deezer.desc": "Deezer の再生基準。SpotifyとApple Musicの中間。",
+  "preset.soundcloud.desc": "SoundCloud 推奨のマスター音量。",
+  "preset.tiktok.desc":
+    "TikTokは公式基準を公開していません。-14 LUFSは他サービスに準拠した目安。",
+  "preset.instagram.desc": "Instagram / Reels の再生基準。",
+  "preset.facebook.desc": "Facebook の再生基準。",
+  "preset.apple-podcasts.desc": "Apple Podcasts の音声（トーク）基準。",
+  "preset.spotify-podcast.desc":
+    "Spotify のポッドキャスト再生基準。Apple Podcastsより大きめ。",
+  "preset.acx.desc":
+    "Audible/ACX オーディオブック。仕様はRMS -23〜-18 dB、ピーク -3 dB未満。ここでは -20 LUFS で近似。",
+  "preset.atsc-a85.desc": "米国TV放送（CALM法）。-24 LKFS、ピーク -2 dBTP。",
 };
 
 const DICTS: Record<string, Dict> = { en, ja };

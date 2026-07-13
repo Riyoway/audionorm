@@ -411,6 +411,45 @@ button:disabled {
   line-height: 1.5;
 }
 
+.hint-src {
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hint-src:hover {
+  text-decoration: underline;
+}
+
+.target-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.target-row .select {
+  flex: 1;
+  min-width: 0;
+}
+
+.text-input {
+  width: 96px;
+  flex-shrink: 0;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--paper);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.94rem;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
 /* ---------- custom select -------------------------------------------- */
 
 .select {
@@ -961,6 +1000,18 @@ button:disabled {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.doc-cat {
+  display: block;
+  background: var(--panel-hi);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 16px;
 }
 
 .doc-id {

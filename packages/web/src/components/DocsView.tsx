@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { PRESETS } from "@audio-normalizer/core";
+import { PRESETS, presetsByCategory } from "@audio-normalizer/core";
 import { CopyCommand } from "./CopyCommand";
 import { useI18n } from "../i18n";
 
@@ -57,13 +57,20 @@ export function DocsView({ onBack }: Props) {
             <span>{t("docs.th.target")}</span>
             <span>{t("docs.th.best")}</span>
           </div>
-          {PRESETS.map((p) => (
-            <div className="doc-tr" key={p.id}>
-              <span className="mono doc-id">{p.id}</span>
-              <span className="mono doc-target">{presetTarget(p)}</span>
-              <span className="doc-use">
-                {t(`preset.${p.id}.desc`, undefined, p.description)}
-              </span>
+          {presetsByCategory().map(({ category, presets }) => (
+            <div key={category}>
+              <div className="doc-tr doc-cat">
+                <span>{t(`cat.${category}`, undefined, category)}</span>
+              </div>
+              {presets.map((p) => (
+                <div className="doc-tr" key={p.id}>
+                  <span className="mono doc-id">{p.id}</span>
+                  <span className="mono doc-target">{presetTarget(p)}</span>
+                  <span className="doc-use">
+                    {t(`preset.${p.id}.desc`, undefined, p.description)}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
         </div>

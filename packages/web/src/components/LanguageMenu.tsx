@@ -29,23 +29,25 @@ export function LanguageMenu() {
         <Globe size={18} />
       </button>
       {open && (
-        <ul className="select-menu lang-menu" role="listbox" aria-label={t("lang.label")}>
-          {locales.map((l) => (
-            <li
-              key={l.code}
-              role="option"
-              aria-selected={l.code === lang}
-              className={"select-option" + (l.code === lang ? " selected" : "")}
-              onClick={() => {
-                setLang(l.code);
-                setOpen(false);
-              }}
-            >
-              <span>{l.label}</span>
-              {l.code === lang && <Check size={16} className="select-check" />}
-            </li>
-          ))}
-        </ul>
+        <div className="select-menu lang-menu">
+          <ul className="select-list" role="listbox" aria-label={t("lang.label")}>
+            {locales.map((l) => (
+              <li
+                key={l.code}
+                role="option"
+                aria-selected={l.code === lang}
+                className={"select-option" + (l.code === lang ? " selected" : "")}
+                onClick={() => {
+                  setLang(l.code);
+                  setOpen(false);
+                }}
+              >
+                <span>{l.label}</span>
+                {l.code === lang && <Check size={16} className="select-check" />}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

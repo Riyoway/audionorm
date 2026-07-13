@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import { ChevronDown, Check } from "lucide-react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, Check, Search } from "lucide-react";
+import { useI18n } from "../i18n";
 
 export interface SelectOption {
   value: string;
   label: string;
+  /** Optional group header shown above the first option of each group. */
+  group?: string;
 }
 
 interface Props {
@@ -12,37 +15,47 @@ interface Props {
   options: SelectOption[];
   onChange: (value: string) => void;
   ariaLabel?: string;
+  /** Show a search box that filters options (for long lists). */
+  searchable?: boolean;
 }
 
-export function Select({ id, value, options, onChange, ariaLabel }: Props) {
+export function Select({ id, value, options, onChange, ariaLabel, searchable }: Props) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
+  const [query, setQuery] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const selectedIndex = Math.max(
-    0,
-    options.findIndex((o) => o.value === value),
-  );
-  const selected = options[selectedIndex];
+  const visible = useMemo(() => {
+    if (!searchable || !query.trim()) return options;
+    const q = query.trim().toLowerCase();
+    return options.filter(
+      (o) =>
+        o.label.toLowerCase().includes(q) || (o.group ?? "").toLowerCase().includes(q),
+    );
+  }, [options, query, searchable]);
+
+  const selected = options.find((o) => o.value === value);
 
   const close = useCallback(() => setOpen(false), []);
 
   const openMenu = useCallback(() => {
-    setHighlight(selectedIndex);
+    setQuery("");
+    setHighlight(Math.max(0, options.findIndex((o) => o.value === value)));
     setOpen(true);
-  }, [selectedIndex]);
+  }, [options, value]);
 
   const choose = useCallback(
     (index: number) => {
-      const opt = options[index];
+      const opt = visible[index];
       if (opt) onChange(opt.value);
       setOpen(false);
     },
-    [options, onChange],
+    [visible, onChange],
   );
 
-  // Close on outside click.
   useEffect(() => {
     if (!open) return;
     const handler = (e: MouseEvent) => {
@@ -52,47 +65,71 @@ export function Select({ id, value, options, onChange, ariaLabel }: Props) {
     return () => document.removeEventListener("mousedown", handler);
   }, [open, close]);
 
-  // Keep the highlighted option in view.
+  useEffect(() => {
+    if (open && searchable) searchRef.current?.focus();
+  }, [open, searchable]);
+
   useEffect(() => {
     if (!open || !listRef.current) return;
-    const el = listRef.current.children[highlight] as HTMLElement | undefined;
+    const el = listRef.current.querySelector(
+      `[data-index="${highlight}"]`,
+    ) as HTMLElement | null;
     el?.scrollIntoView({ block: "nearest" });
   }, [open, highlight]);
 
-  const onKeyDown = (e: React.KeyboardEvent) => {
+  const triggerKeyDown = (e: React.KeyboardEvent) => {
     switch (e.key) {
       case "Enter":
       case " ":
         e.preventDefault();
-        if (open) choose(highlight);
+        if (open && !searchable) choose(highlight);
         else openMenu();
         break;
       case "ArrowDown":
         e.preventDefault();
         if (!open) openMenu();
-        else setHighlight((h) => Math.min(options.length - 1, h + 1));
+        else if (!searchable) setHighlight((h) => Math.min(visible.length - 1, h + 1));
         break;
       case "ArrowUp":
         e.preventDefault();
         if (!open) openMenu();
-        else setHighlight((h) => Math.max(0, h - 1));
+        else if (!searchable) setHighlight((h) => Math.max(0, h - 1));
         break;
       case "Home":
-        if (open) {
+        if (open && !searchable) {
           e.preventDefault();
           setHighlight(0);
         }
         break;
       case "End":
-        if (open) {
+        if (open && !searchable) {
           e.preventDefault();
-          setHighlight(options.length - 1);
+          setHighlight(visible.length - 1);
         }
         break;
       case "Escape":
+      case "Tab":
         close();
         break;
-      case "Tab":
+    }
+  };
+
+  const searchKeyDown = (e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case "Enter":
+        e.preventDefault();
+        choose(highlight);
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        setHighlight((h) => Math.min(visible.length - 1, h + 1));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setHighlight((h) => Math.max(0, h - 1));
+        break;
+      case "Escape":
+        e.preventDefault();
         close();
         break;
     }
@@ -109,35 +146,63 @@ export function Select({ id, value, options, onChange, ariaLabel }: Props) {
         aria-expanded={open}
         aria-label={ariaLabel}
         onClick={() => (open ? close() : openMenu())}
-        onKeyDown={onKeyDown}
+        onKeyDown={triggerKeyDown}
       >
         <span className="select-value">{selected?.label}</span>
         <ChevronDown size={18} className="select-chevron" />
       </button>
 
       {open && (
-        <ul className="select-menu" role="listbox" ref={listRef} tabIndex={-1}>
-          {options.map((opt, i) => {
-            const isSelected = opt.value === value;
-            return (
-              <li
-                key={opt.value}
-                role="option"
-                aria-selected={isSelected}
-                className={
-                  "select-option" +
-                  (i === highlight ? " active" : "") +
-                  (isSelected ? " selected" : "")
-                }
-                onMouseEnter={() => setHighlight(i)}
-                onClick={() => choose(i)}
-              >
-                <span>{opt.label}</span>
-                {isSelected && <Check size={16} className="select-check" />}
-              </li>
-            );
-          })}
-        </ul>
+        <div className="select-menu">
+          {searchable && (
+            <div className="select-search">
+              <Search size={15} />
+              <input
+                ref={searchRef}
+                type="text"
+                value={query}
+                placeholder={t("search.placeholder")}
+                aria-label={t("search.placeholder")}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setHighlight(0);
+                }}
+                onKeyDown={searchKeyDown}
+              />
+            </div>
+          )}
+          <ul className="select-list" role="listbox" ref={listRef} tabIndex={-1}>
+            {visible.length === 0 && <li className="select-empty">{t("select.empty")}</li>}
+            {visible.map((opt, i) => {
+              const isSelected = opt.value === value;
+              const showGroup = opt.group && opt.group !== visible[i - 1]?.group;
+              return (
+                <Fragment key={opt.value}>
+                  {showGroup && (
+                    <li className="select-group" role="presentation" aria-hidden="true">
+                      {opt.group}
+                    </li>
+                  )}
+                  <li
+                    role="option"
+                    data-index={i}
+                    aria-selected={isSelected}
+                    className={
+                      "select-option" +
+                      (i === highlight ? " active" : "") +
+                      (isSelected ? " selected" : "")
+                    }
+                    onMouseEnter={() => setHighlight(i)}
+                    onClick={() => choose(i)}
+                  >
+                    <span>{opt.label}</span>
+                    {isSelected && <Check size={16} className="select-check" />}
+                  </li>
+                </Fragment>
+              );
+            })}
+          </ul>
+        </div>
       )}
     </div>
   );

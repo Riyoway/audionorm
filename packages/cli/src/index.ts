@@ -1,7 +1,12 @@
 import { resolve, dirname, basename, extname, join } from "node:path";
 import { stat, mkdir } from "node:fs/promises";
 import { glob } from "tinyglobby";
-import { PRESETS, getPreset, DEFAULT_PRESET_ID, type Preset } from "@audio-normalizer/core";
+import {
+  getPreset,
+  DEFAULT_PRESET_ID,
+  presetsByCategory,
+  type Preset,
+} from "@audio-normalizer/core";
 import {
   measureLoudnorm,
   measureVolume,
@@ -74,9 +79,13 @@ function parseArgs(argv: string[]): Options | { help: true } | { listPresets: tr
 }
 
 function printHelp(): void {
-  const presetList = PRESETS.map(
-    (p) => `    ${p.id.padEnd(11)} ${p.label}\n               ${p.description}`,
-  ).join("\n");
+  const presetList = presetsByCategory()
+    .map(
+      ({ category, presets }) =>
+        `  ${category}\n` +
+        presets.map((p) => `    ${p.id.padEnd(16)} ${p.label}`).join("\n"),
+    )
+    .join("\n\n");
   console.log(`
 audionorm — normalize audio files to an optimal loudness
 
@@ -243,7 +252,14 @@ async function main(): Promise<void> {
     return;
   }
   if ("listPresets" in parsed) {
-    for (const p of PRESETS) console.log(`${p.id.padEnd(11)} ${p.label}\n  ${p.description}\n`);
+    for (const { category, presets } of presetsByCategory()) {
+      console.log(`\n${category}`);
+      for (const p of presets) {
+        console.log(`  ${p.id.padEnd(16)} ${p.label}`);
+        console.log(`  ${" ".repeat(16)} ${p.description}`);
+      }
+    }
+    console.log("");
     return;
   }
 
