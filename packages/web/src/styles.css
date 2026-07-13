@@ -43,6 +43,16 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* hide the native scrollbar (still scrollable) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body {
@@ -229,7 +239,8 @@ button:disabled {
   display: inline-flex;
 }
 
-.lang-menu {
+/* higher specificity so it beats .select-menu's left:0/right:0 */
+.lang .lang-menu {
   left: auto;
   right: 0;
   min-width: 150px;
