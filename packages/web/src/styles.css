@@ -304,7 +304,29 @@ button:disabled {
 /* ---------- hero ------------------------------------------------------ */
 
 .hero {
+  position: relative;
   margin-bottom: 28px;
+}
+
+/* animated WebGL aurora behind the hero text */
+.hero-aurora {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  max-width: var(--maxw);
+  height: 420px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 25%, #000 35%, transparent 75%);
+  mask-image: radial-gradient(120% 100% at 50% 25%, #000 35%, transparent 75%);
+}
+
+.hero > *:not(.hero-aurora) {
+  position: relative;
+  z-index: 1;
 }
 
 .hero h1 {

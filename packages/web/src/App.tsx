@@ -28,6 +28,7 @@ import { DocsView } from "./components/DocsView";
 import { LanguageMenu } from "./components/LanguageMenu";
 import { ServiceMarquee } from "./components/ServiceMarquee";
 import { FaqSection } from "./components/FaqSection";
+import SoftAurora from "./components/SoftAurora";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 import { useI18n } from "./i18n";
 
@@ -54,6 +55,12 @@ export function App() {
   const itemsRef = useRef(items);
   itemsRef.current = items;
   const heroInputRef = useRef<HTMLInputElement>(null);
+  // Skip the animated WebGL backdrop when the user prefers reduced motion.
+  const [showAurora] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
 
   // The active preset. "custom" builds a LUFS preset from the entered value.
   const preset = useMemo<Preset>(() => {
@@ -206,6 +213,21 @@ export function App() {
       ) : (
         <main className="app-main">
           <section className="hero">
+            {showAurora && (
+              <div className="hero-aurora" aria-hidden="true">
+                <SoftAurora
+                  color1="#e6e8f2"
+                  color2="#0a84ff"
+                  brightness={0.5}
+                  speed={0.5}
+                  scale={1.4}
+                  bandHeight={0.62}
+                  bandSpread={0.9}
+                  colorSpeed={0.7}
+                  enableMouseInteraction={false}
+                />
+              </div>
+            )}
             <h1>{t("hero.title")}</h1>
             <p className="hero-sub">{t("hero.sub")}</p>
             <div className="hero-cta">
