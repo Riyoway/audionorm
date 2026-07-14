@@ -43,13 +43,15 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* hide the native scrollbar (still scrollable) */
+}
+
+/* hide every native scrollbar app-wide (scrolling still works) */
+* {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0;
   height: 0;
   display: none;
@@ -152,6 +154,8 @@ button:disabled {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* contain the full-bleed hero aurora so it never causes horizontal scroll */
+  overflow-x: clip;
 }
 
 .app-bar {
