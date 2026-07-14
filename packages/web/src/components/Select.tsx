@@ -7,6 +7,12 @@ export interface SelectOption {
   label: string;
   /** Optional group header shown above the first option of each group. */
   group?: string;
+  /** Optional leading icon URL. */
+  icon?: string;
+}
+
+function hideBrokenIcon(e: React.SyntheticEvent<HTMLImageElement>) {
+  e.currentTarget.style.display = "none";
 }
 
 interface Props {
@@ -152,7 +158,19 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
         onClick={() => (open ? close() : openMenu())}
         onKeyDown={triggerKeyDown}
       >
-        <span className="select-value">{selected?.label}</span>
+        <span className="select-value">
+          {selected?.icon && (
+            <img
+              className="select-icon"
+              src={selected.icon}
+              alt=""
+              width={16}
+              height={16}
+              onError={hideBrokenIcon}
+            />
+          )}
+          <span className="select-value-text">{selected?.label}</span>
+        </span>
         <ChevronDown size={18} className="select-chevron" />
       </button>
 
@@ -204,7 +222,19 @@ export function Select({ id, value, options, onChange, ariaLabel, searchable }: 
                     onMouseEnter={() => setHighlight(i)}
                     onClick={() => choose(i)}
                   >
-                    <span>{opt.label}</span>
+                    <span className="select-optlabel">
+                      {opt.icon && (
+                        <img
+                          className="select-icon"
+                          src={opt.icon}
+                          alt=""
+                          width={16}
+                          height={16}
+                          onError={hideBrokenIcon}
+                        />
+                      )}
+                      {opt.label}
+                    </span>
                     {isSelected && <Check size={16} className="select-check" />}
                   </li>
                 </Fragment>

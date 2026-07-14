@@ -322,9 +322,9 @@ button:disabled {
   height: 520px;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
-  -webkit-mask-image: radial-gradient(100% 115% at 50% 50%, #000 50%, transparent 88%);
-  mask-image: radial-gradient(100% 115% at 50% 50%, #000 50%, transparent 88%);
+  opacity: 0.45;
+  -webkit-mask-image: radial-gradient(100% 115% at 50% 50%, #000 45%, transparent 85%);
+  mask-image: radial-gradient(100% 115% at 50% 50%, #000 45%, transparent 85%);
 }
 
 .hero > *:not(.hero-aurora) {
@@ -632,9 +632,30 @@ button:disabled {
 }
 
 .select-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.select-value-text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.select-optlabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.select-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  opacity: 0.9;
 }
 
 .select-chevron {

@@ -29,6 +29,7 @@ import { LanguageMenu } from "./components/LanguageMenu";
 import { ServiceMarquee } from "./components/ServiceMarquee";
 import { FaqSection } from "./components/FaqSection";
 import SoftAurora from "./components/SoftAurora";
+import { iconUrlForService } from "./lib/serviceIcons";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 import { useI18n } from "./i18n";
 
@@ -92,11 +93,16 @@ export function App() {
 
   // Grouped, searchable target list: general presets + per-service targets.
   const targetOptions = useMemo(() => {
-    const opts: { value: string; label: string; group: string }[] = [];
+    const opts: { value: string; label: string; group: string; icon?: string }[] = [];
     for (const { category, presets } of presetsByCategory()) {
       const group = t(`cat.${category}`, undefined, category);
       for (const p of presets) {
-        opts.push({ value: p.id, label: t(`preset.${p.id}.label`, undefined, p.label), group });
+        opts.push({
+          value: p.id,
+          label: t(`preset.${p.id}.label`, undefined, p.label),
+          group,
+          icon: iconUrlForService(p.id),
+        });
       }
     }
     opts.push({ value: "custom", label: t("target.custom"), group: t("cat.Custom", undefined, "Custom") });
@@ -218,7 +224,7 @@ export function App() {
                 <SoftAurora
                   color1="#eef0fa"
                   color2="#3d9bff"
-                  brightness={1.15}
+                  brightness={0.75}
                   speed={0.5}
                   scale={1.4}
                   bandHeight={0.5}
