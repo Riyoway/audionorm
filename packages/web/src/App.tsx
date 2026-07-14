@@ -222,9 +222,9 @@ export function App() {
             {showAurora && (
               <div className="hero-aurora" aria-hidden="true">
                 <SoftAurora
-                  color1="#eef0fa"
-                  color2="#3d9bff"
-                  brightness={0.75}
+                  color1="#f7f7f7"
+                  color2="#e100ff"
+                  brightness={1.0}
                   speed={0.5}
                   scale={1.4}
                   bandHeight={0.5}
