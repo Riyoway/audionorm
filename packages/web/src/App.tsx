@@ -221,7 +221,7 @@ export function App() {
                   brightness={1.15}
                   speed={0.5}
                   scale={1.4}
-                  bandHeight={0.6}
+                  bandHeight={0.5}
                   bandSpread={0.95}
                   colorSpeed={0.7}
                   enableMouseInteraction={false}
