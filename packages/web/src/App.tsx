@@ -216,13 +216,13 @@ export function App() {
             {showAurora && (
               <div className="hero-aurora" aria-hidden="true">
                 <SoftAurora
-                  color1="#e6e8f2"
-                  color2="#0a84ff"
-                  brightness={0.5}
+                  color1="#eef0fa"
+                  color2="#3d9bff"
+                  brightness={1.15}
                   speed={0.5}
                   scale={1.4}
-                  bandHeight={0.62}
-                  bandSpread={0.9}
+                  bandHeight={0.6}
+                  bandSpread={0.95}
                   colorSpeed={0.7}
                   enableMouseInteraction={false}
                 />

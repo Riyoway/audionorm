@@ -311,17 +311,16 @@ button:disabled {
 /* animated WebGL aurora behind the hero text */
 .hero-aurora {
   position: absolute;
-  top: -120px;
+  top: -100px;
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  max-width: var(--maxw);
-  height: 420px;
+  height: 480px;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.55;
-  -webkit-mask-image: radial-gradient(120% 100% at 50% 25%, #000 35%, transparent 75%);
-  mask-image: radial-gradient(120% 100% at 50% 25%, #000 35%, transparent 75%);
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(100% 118% at 50% 20%, #000 55%, transparent 90%);
+  mask-image: radial-gradient(100% 118% at 50% 20%, #000 55%, transparent 90%);
 }
 
 .hero > *:not(.hero-aurora) {
