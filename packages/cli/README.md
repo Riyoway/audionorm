@@ -52,14 +52,37 @@ npx audionorm --target -12 song.flac -f wav
 
 ## Presets
 
+**General**
+
 | id          | Target      | Best for                                          |
 | ----------- | ----------- | ------------------------------------------------- |
-| `streaming` | −14 LUFS    | General use, music — Spotify/YouTube level        |
+| `streaming` | −14 LUFS    | General use, music (Spotify/YouTube level)        |
 | `podcast`   | −16 LUFS    | Voice, spoken word                                |
 | `broadcast` | −23 LUFS    | EBU R128 broadcast                                |
 | `loud`      | −9 LUFS     | Hot master, maximum perceived loudness            |
 | `peak`      | −1 dB peak  | Lossless peak normalize                           |
 | `sfx`       | −3 dB peak  | **UI / button sound effects** (the too-loud fix)  |
+
+**Per-service targets** (master to a platform's playback loudness):
+
+| id                | Target             | Service                       |
+| ----------------- | ------------------ | ----------------------------- |
+| `spotify`         | −14 LUFS           | Spotify                       |
+| `apple-music`     | −16 LUFS           | Apple Music (Sound Check)     |
+| `youtube`         | −14 LUFS           | YouTube / YouTube Music       |
+| `amazon-music`    | −14 LUFS, −2 dBTP  | Amazon Music                  |
+| `tidal`           | −14 LUFS           | Tidal                         |
+| `deezer`          | −15 LUFS           | Deezer                        |
+| `soundcloud`      | −14 LUFS           | SoundCloud                    |
+| `tiktok`          | −14 LUFS           | TikTok                        |
+| `instagram`       | −14 LUFS           | Instagram / Reels             |
+| `facebook`        | −14 LUFS           | Facebook                      |
+| `apple-podcasts`  | −16 LUFS           | Apple Podcasts                |
+| `spotify-podcast` | −14 LUFS           | Spotify (podcast)             |
+| `acx`             | −20 LUFS, −3 dBTP  | Audible / ACX audiobook       |
+| `atsc-a85`        | −24 LKFS, −2 dBTP  | ATSC A/85 (US TV)             |
+
+Run `npx audionorm --list-presets` for the current list.
 
 ## Options
 
