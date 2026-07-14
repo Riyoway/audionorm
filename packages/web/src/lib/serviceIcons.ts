@@ -12,7 +12,7 @@ const SLUGS: Record<string, string> = {
   "apple-music": "applemusic",
   "apple-podcasts": "applepodcasts",
   youtube: "youtube",
-  "amazon-music": "amazonmusic",
+  // Amazon Music has no logo on the Simple Icons CDN, so it renders text-only.
   tidal: "tidal",
   deezer: "deezer",
   soundcloud: "soundcloud",
