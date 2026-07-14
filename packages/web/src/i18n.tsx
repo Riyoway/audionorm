@@ -40,6 +40,29 @@ const en: Dict = {
   "target.customPlaceholder": "-14",
   "hint.custom": "Set your own integrated-loudness target in LUFS (true peak -1 dBTP).",
   "word.source": "source",
+  "cta.choose": "Choose audio files",
+  "cta.hint": "or drag & drop below. Nothing is uploaded.",
+  "proof.pre": "Master once, hit the right loudness on",
+  "proof.count": "12+ platforms",
+  "proof.suffix": "automatically.",
+  "proof.disclaimer":
+    "Loudness targets are researched from platform docs and mastering references, and change over time.",
+  "faq.title": "FAQ",
+  "faq.q1": "What is audio loudness normalization?",
+  "faq.a1":
+    "It measures the perceived loudness of a file in LUFS (ITU-R BS.1770 / EBU R128), then applies gain so every clip hits the same target, for example -14 LUFS. Unlike peak normalization, it matches how loud audio actually sounds, not just its highest sample.",
+  "faq.q2": "How do I fix a sound effect that is too loud?",
+  "faq.a2":
+    "Use the 'UI / Button SFX' preset (or the 'peak' preset), which peak-normalizes each clip to a consistent, not-too-loud level. For very short clips like clicks, gated LUFS is unreliable, so peak normalization is the right choice. CLI: npx audionorm ./sounds -p sfx.",
+  "faq.q3": "What LUFS should I target?",
+  "faq.a3":
+    "Use -14 LUFS for streaming and music (Spotify, YouTube, Amazon), -16 LUFS for podcasts and Apple Music, and -23 LUFS for EBU R128 broadcast. Or just pick the service you are uploading to and audionorm uses its target.",
+  "faq.q4": "Does audionorm upload my audio files?",
+  "faq.a4":
+    "No. The web app processes audio entirely in your browser with the Web Audio API, so files never leave your device. It also works offline once loaded.",
+  "faq.q5": "Is there a command-line version?",
+  "faq.a5":
+    "Yes. Run npx audionorm track.wav. It bundles ffmpeg, so there is nothing to install, and it batch-processes folders using the same presets as the web app.",
   "output.ready": "{done}/{total} ready",
   "btn.clear": "Clear",
   "btn.reapply": "Re-apply",
@@ -130,6 +153,29 @@ const ja: Dict = {
   "target.customPlaceholder": "-14",
   "hint.custom": "任意の積分ラウドネス目標をLUFSで指定（トゥルーピーク -1 dBTP）。",
   "word.source": "出典",
+  "cta.choose": "音声ファイルを選ぶ",
+  "cta.hint": "または下にドラッグ&ドロップ。アップロードはされません。",
+  "proof.pre": "一度合わせるだけで、",
+  "proof.count": "12以上のサービス",
+  "proof.suffix": "に自動で最適化。",
+  "proof.disclaimer":
+    "ラウドネス目標は各プラットフォームのドキュメントやマスタリング資料を基にしており、時期により変わることがあります。",
+  "faq.title": "よくある質問",
+  "faq.q1": "ラウドネス正規化とは？",
+  "faq.a1":
+    "ファイルの知覚的な音の大きさをLUFS（ITU-R BS.1770 / EBU R128）で測り、すべてのクリップが同じ目標（例: -14 LUFS）になるようゲインを適用します。単なるピークではなく、実際の聞こえ方の大きさを揃えます。",
+  "faq.q2": "大きすぎる効果音を直すには？",
+  "faq.a2":
+    "「UI / ボタン効果音」プリセット（または「ピーク」）を使うと、各クリップを一定で大きすぎないピークに揃えます。クリック音のような非常に短い音はゲート付きLUFSが不安定なので、ピーク正規化が適切です。CLI: npx audionorm ./sounds -p sfx。",
+  "faq.q3": "目標のLUFSはいくつ？",
+  "faq.a3":
+    "配信・音楽は -14 LUFS（Spotify、YouTube、Amazon）、ポッドキャストやApple Musicは -16 LUFS、EBU R128放送は -23 LUFS。アップロード先のサービスを選べば、その目標値が使われます。",
+  "faq.q4": "音声ファイルはアップロードされますか？",
+  "faq.a4":
+    "いいえ。Webアプリは Web Audio API でブラウザ内だけで処理するため、ファイルが端末外に出ることはありません。読み込み後はオフラインでも動作します。",
+  "faq.q5": "コマンドライン版はありますか？",
+  "faq.a5":
+    "はい。npx audionorm track.wav で実行できます。ffmpeg を同梱しているのでインストール不要で、Webアプリと同じプリセットでフォルダを一括処理できます。",
   "cat.General": "一般",
   "cat.Music streaming": "音楽ストリーミング",
   "cat.Video & social": "動画・SNS",

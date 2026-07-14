@@ -10,6 +10,7 @@ import {
   Zap,
   ArrowUpRight,
   Trash2,
+  Upload,
 } from "lucide-react";
 import {
   getPreset,
@@ -25,6 +26,8 @@ import { Select } from "./components/Select";
 import { CopyCommand } from "./components/CopyCommand";
 import { DocsView } from "./components/DocsView";
 import { LanguageMenu } from "./components/LanguageMenu";
+import { ServiceMarquee } from "./components/ServiceMarquee";
+import { FaqSection } from "./components/FaqSection";
 import { usePwaInstall } from "./hooks/usePwaInstall";
 import { useI18n } from "./i18n";
 
@@ -50,6 +53,7 @@ export function App() {
   const [items, setItems] = useState<FileItem[]>([]);
   const itemsRef = useRef(items);
   itemsRef.current = items;
+  const heroInputRef = useRef<HTMLInputElement>(null);
 
   // The active preset. "custom" builds a LUFS preset from the entered value.
   const preset = useMemo<Preset>(() => {
@@ -204,11 +208,55 @@ export function App() {
           <section className="hero">
             <h1>{t("hero.title")}</h1>
             <p className="hero-sub">{t("hero.sub")}</p>
+            <div className="hero-cta">
+              <button
+                className="btn-primary btn-lg"
+                onClick={() => heroInputRef.current?.click()}
+              >
+                <Upload size={17} />
+                {t("cta.choose")}
+              </button>
+              <span className="hero-cta-hint">{t("cta.hint")}</span>
+            </div>
+            <input
+              ref={heroInputRef}
+              type="file"
+              accept="audio/*,.wav,.mp3,.flac,.m4a,.aac,.ogg,.opus,.aiff"
+              multiple
+              hidden
+              onChange={(e) => {
+                const fs = Array.from(e.target.files ?? []);
+                if (fs.length) {
+                  addFiles(fs);
+                  document
+                    .getElementById("tool")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+                e.target.value = "";
+              }}
+            />
+          </section>
+
+          <section className="proof" aria-label="Supported services">
+            <p className="proof-label">
+              {t("proof.pre")} <b>{t("proof.count")}</b> {t("proof.suffix")}
+            </p>
+            <ServiceMarquee />
+            <p className="proof-disclaimer">{t("proof.disclaimer")}</p>
+          </section>
+
+          <section className="panel" id="tool">
+            <div className="panel-head">
+              <span className="panel-index">1</span>
+              <span className="panel-title">{t("panel.source.title")}</span>
+              <span className="panel-note">{t("panel.source.note")}</span>
+            </div>
+            <Dropzone onFiles={addFiles} />
           </section>
 
           <section className="panel">
             <div className="panel-head">
-              <span className="panel-index">1</span>
+              <span className="panel-index">2</span>
               <span className="panel-title">{t("panel.target.title")}</span>
               <span className="panel-note">{t("panel.target.note")}</span>
             </div>
@@ -277,15 +325,6 @@ export function App() {
             </div>
           </section>
 
-          <section className="panel">
-            <div className="panel-head">
-              <span className="panel-index">2</span>
-              <span className="panel-title">{t("panel.source.title")}</span>
-              <span className="panel-note">{t("panel.source.note")}</span>
-            </div>
-            <Dropzone onFiles={addFiles} />
-          </section>
-
           {items.length > 0 && (
             <section className="panel">
               <div className="panel-head results-head">
@@ -325,6 +364,8 @@ export function App() {
               </div>
             </section>
           )}
+
+          <FaqSection />
         </main>
       )}
 

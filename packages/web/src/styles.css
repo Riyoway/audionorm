@@ -324,6 +324,137 @@ button:disabled {
   margin: 0;
 }
 
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.btn-lg {
+  padding: 13px 22px;
+  font-size: 0.98rem;
+}
+
+.hero-cta-hint {
+  font-size: 0.82rem;
+  color: var(--faint);
+}
+
+/* ---------- social proof marquee ------------------------------------- */
+
+.proof {
+  margin: 34px 0 30px;
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: 0.09s;
+}
+
+.proof-label {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+
+.proof-label b {
+  color: var(--accent);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.proof-disclaimer {
+  font-size: 0.72rem;
+  color: var(--faint);
+  margin: 14px 0 0;
+}
+
+.marquee-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: marquee 120s linear infinite;
+  will-change: transform;
+}
+
+.marquee.reverse .marquee-track {
+  animation-direction: reverse;
+  animation-duration: 140s;
+}
+
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px 6px 10px;
+  white-space: nowrap;
+}
+
+.chip-icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  opacity: 0.9;
+}
+
+/* ---------- FAQ ------------------------------------------------------- */
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.faq-q {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0 0 6px;
+}
+
+.faq-a {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 76ch;
+}
+
 /* ---------- panels (signal chain) ------------------------------------- */
 
 .panel {
