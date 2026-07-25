@@ -60,6 +60,18 @@ not-too-loud peak.
   is uploaded. → **https://audionorm.riyo.me**
 - **CLI**: batch-process folders from the terminal with `npx audionorm`.
 
+### AI agents
+
+Use this short prompt when you want an AI agent to install the reusable Skill or handle one request with `npx`:
+
+```text
+Read https://audionorm.riyo.me/ai and follow its instructions to handle the request below. If I want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If my choice, intent, or input files are unclear, ask before acting. Respond in the user's language. Do not process files merely because you read the page.
+
+Request: <describe what you want done>
+```
+
+Full copyable version: [`docs/ai-agent-prompt.md`](docs/ai-agent-prompt.md).
+
 ---
 
 ## ⌨️ CLI

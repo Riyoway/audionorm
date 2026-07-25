@@ -4,6 +4,7 @@
   "outputDirectory": "packages/web/dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "cleanUrls": true,
   "github": {
     "silent": true
   }

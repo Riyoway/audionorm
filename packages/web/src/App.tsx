@@ -428,6 +428,9 @@ export function App() {
             <button className="footer-link" onClick={() => goto("docs")}>
               {t("nav.docs")}
             </button>
+            <a className="footer-link" href="/ai">
+              AI agent guide
+            </a>
             {canInstall && (
               <button className="footer-link" onClick={promptInstall}>
                 {t("footer.link.install")}
