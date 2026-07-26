@@ -4,17 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AudioNorm AI instructions</title>
-  <meta name="description" content="Machine-readable instructions for AI agents using AudioNorm.">
+  <meta name="description" content="Detailed machine-readable instructions for AI agents using AudioNorm.">
   <style>
     :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.55; }
-    body { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+    body { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; }
     h1 { font-size: 1.8rem; }
     h2 { margin-top: 2rem; font-size: 1.15rem; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
     pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid currentColor; border-radius: 4px; }
     dt { font-weight: 700; margin-top: 12px; }
     dd { margin-left: 0; }
-    li { margin: 6px 0; }
+    li { margin: 5px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; vertical-align: top; padding: 7px; border: 1px solid currentColor; }
     .prompt { display: flex; align-items: start; gap: 8px; }
     .prompt pre { flex: 1; margin: 0; }
     button { padding: 8px 12px; cursor: pointer; }
@@ -24,46 +26,91 @@
 <body>
   <main>
     <h1>AudioNorm AI instructions</h1>
-    <p>This is an instruction page for AI agents. Reading this page alone must not run commands, inspect files, install a Skill, or modify files. Respond in the user's language.</p>
+    <p>This page is an instruction source for AI agents. Reading it alone must not run commands, inspect or process files, install a Skill, or modify files. Respond in the user's language.</p>
 
-    <h2>Required behavior</h2>
+    <h2>Required decision flow</h2>
     <ol>
       <li>If the user only asks what AudioNorm is or asks to read this page, explain it and do not process files.</li>
-      <li>If the user wants audio processing but has not chosen a reusable Skill or a one-off run, ask which they want before acting.</li>
-      <li>If the user gives concrete input files, folders, or globs and a clear operation, do not ask that choice again. Use the CLI rules below.</li>
-      <li>If paths, formats, presets, or requested settings are unclear, ask only for the missing information.</li>
-      <li>Do not invent CLI options, formats, presets, or recursive behavior.</li>
+      <li>If the user wants audio processing but has not chosen reusable Skill support or a one-off run, ask which they want before acting.</li>
+      <li>If the user gives concrete input files, folders, or globs and a clear operation, do not ask that choice again. Use the CLI contract below.</li>
+      <li>If a path, preset, format, output location, or requested setting is missing, ask only for that missing information.</li>
+      <li>Do not invent a preset, option, format, service target, or recursive behavior.</li>
     </ol>
 
     <h2>Available methods</h2>
     <dl>
       <dt>Reusable Claude Code Skill</dt>
-      <dd>Install or use <code>.claude/skills/audionorm/SKILL.md</code> when the user wants repeated support.</dd>
+      <dd><code>.claude/skills/audionorm/SKILL.md</code>. Use this when the user wants repeated support.</dd>
       <dt>One-off CLI</dt>
-      <dd>Use <code>npx audionorm [options] &lt;files|globs|folders...&gt;</code> for a single request.</dd>
+      <dd><code>npx audionorm [options] &lt;files|globs|folders...&gt;</code>. Use this for a single request.</dd>
     </dl>
 
-    <h2>CLI contract</h2>
-    <dl>
-      <dt>Inputs</dt>
-      <dd>Single files, multiple files, globs, or folders. A folder matches supported files directly inside it and is not recursive.</dd>
-      <dt>Input extensions</dt>
-      <dd><code>.wav</code>, <code>.mp3</code>, <code>.flac</code>, <code>.m4a</code>, <code>.aac</code>, <code>.ogg</code>, <code>.opus</code>, <code>.wma</code>, <code>.aiff</code>.</dd>
-      <dt>Defaults</dt>
-      <dd>Preset <code>streaming</code>, output beside each input, input extension preserved, suffix <code>-normalized</code>.</dd>
-      <dt>Options</dt>
-      <dd><code>-h</code>, <code>--help</code>, <code>--list-presets</code>, <code>-p</code>/<code>--preset</code>, <code>-o</code>/<code>--out</code>, <code>--suffix</code>, <code>-f</code>/<code>--format</code>, <code>--target</code>, <code>--peak</code>, <code>--analyze</code>.</dd>
-      <dt>Output formats listed by the CLI</dt>
-      <dd><code>wav</code>, <code>mp3</code>, <code>flac</code>, <code>m4a</code>, <code>ogg</code>.</dd>
-    </dl>
+    <h2>Preset selection</h2>
+    <p>Use the most specific matching preset when the user names a service or use case. If no use case is given, use <code>streaming</code>.</p>
+    <table>
+      <thead><tr><th>Request or use case</th><th>Preset</th><th>Target</th></tr></thead>
+      <tbody>
+        <tr><td>General music or streaming</td><td><code>streaming</code></td><td>-14 LUFS, -1 dBTP</td></tr>
+        <tr><td>Voice, spoken word, podcast</td><td><code>podcast</code></td><td>-16 LUFS, -1.5 dBTP</td></tr>
+        <tr><td>Broadcast or EBU R128</td><td><code>broadcast</code></td><td>-23 LUFS, -1 dBTP</td></tr>
+        <tr><td>Very loud club-style master</td><td><code>loud</code></td><td>-9 LUFS, -1 dBTP</td></tr>
+        <tr><td>Peak normalization</td><td><code>peak</code></td><td>-1 dBFS peak</td></tr>
+        <tr><td>UI sounds, button clicks, notifications, short SFX</td><td><code>sfx</code></td><td>-3 dBFS peak</td></tr>
+      </tbody>
+    </table>
 
-    <h2>Safety</h2>
+    <h2>Service presets</h2>
     <ul>
-      <li><code>--analyze</code> reports measurements without writing files.</li>
-      <li>Existing output files can be overwritten by ffmpeg.</li>
-      <li>Multiple files are processed sequentially. Any failed file makes the final exit code 1.</li>
-      <li>Use <code>--list-presets</code> when the requested preset is unknown.</li>
+      <li>Music: <code>spotify</code> -14 LUFS, <code>apple-music</code> -16 LUFS, <code>youtube</code> -14 LUFS, <code>amazon-music</code> -14 LUFS and -2 dBTP, <code>tidal</code> -14 LUFS, <code>deezer</code> -15 LUFS, <code>soundcloud</code> -14 LUFS.</li>
+      <li>Social video: <code>tiktok</code> -14 LUFS, <code>instagram</code> -14 LUFS, <code>facebook</code> -14 LUFS.</li>
+      <li>Podcast and audiobook: <code>apple-podcasts</code> -16 LUFS, <code>spotify-podcast</code> -14 LUFS, <code>acx</code> -20 LUFS with -3 dBTP. ACX is an approximation of its RMS and peak requirements.</li>
+      <li>Broadcast: <code>atsc-a85</code> -24 LKFS with -2 dBTP.</li>
     </ul>
+    <p>These are practical targets and can change over time. Do not claim that a platform guarantees or endorses a target.</p>
+
+    <h2>Preset and measurement behavior</h2>
+    <ul>
+      <li>LUFS presets use two-pass ffmpeg <code>loudnorm</code> measurement and linear gain.</li>
+      <li>Peak presets use ffmpeg <code>volumedetect</code> and a gain change based on the loudest sample.</li>
+      <li><code>sfx</code> is the correct choice for short button, click, notification, and UI sounds because gated LUFS is unreliable for very short clips.</li>
+      <li><code>--target &lt;LUFS&gt;</code> overrides the target for a LUFS preset, for example <code>--target -12</code>.</li>
+      <li><code>--peak &lt;dB&gt;</code> overrides the target for a peak preset, for example <code>--peak -3</code>.</li>
+      <li><code>--analyze</code> measures and reports without writing output files.</li>
+    </ul>
+
+    <h2>CLI options</h2>
+    <dl>
+      <dt><code>-h</code>, <code>--help</code></dt><dd>Print help and exit.</dd>
+      <dt><code>--list-presets</code></dt><dd>Print current preset IDs and descriptions and exit.</dd>
+      <dt><code>-p</code>, <code>--preset &lt;id&gt;</code></dt><dd>Select a preset. Default is <code>streaming</code>.</dd>
+      <dt><code>-o</code>, <code>--out &lt;dir&gt;</code></dt><dd>Write outputs to this directory. Create it when needed.</dd>
+      <dt><code>--suffix &lt;str&gt;</code></dt><dd>Replace the default <code>-normalized</code> filename suffix.</dd>
+      <dt><code>-f</code>, <code>--format &lt;ext&gt;</code></dt><dd>Override the output extension. CLI help lists <code>wav</code>, <code>mp3</code>, <code>flac</code>, <code>m4a</code>, and <code>ogg</code>.</dd>
+      <dt><code>--target &lt;LUFS&gt;</code></dt><dd>Override a LUFS preset target.</dd>
+      <dt><code>--peak &lt;dB&gt;</code></dt><dd>Override a peak preset target.</dd>
+      <dt><code>--analyze</code></dt><dd>Measure and report without writing files.</dd>
+    </dl>
+
+    <h2>Inputs and outputs</h2>
+    <ul>
+      <li>Supported input extensions: <code>.wav</code>, <code>.mp3</code>, <code>.flac</code>, <code>.m4a</code>, <code>.aac</code>, <code>.ogg</code>, <code>.opus</code>, <code>.wma</code>, <code>.aiff</code>.</li>
+      <li>Inputs may be one file, multiple files, a glob, or a folder.</li>
+      <li>Folders match supported files directly inside them and are not recursive. Use an explicit glob such as <code>"sounds/**/*.wav"</code> for subfolders.</li>
+      <li>Default output is beside the input, keeps its extension, and adds <code>-normalized</code>.</li>
+      <li>Existing output files are overwritten by ffmpeg. Multiple files run sequentially. Any failed file makes the final exit code 1.</li>
+      <li>Output encoding: WAV 24-bit PCM, FLAC compression level 5, MP3 libmp3lame quality 0, M4A/AAC AAC 256 kbps, OGG/Opus Opus 192 kbps.</li>
+    </ul>
+
+    <h2>Request to command examples</h2>
+    <pre><code>General streaming: npx audionorm track.wav
+Spotify album: npx audionorm -p spotify "album/*.wav"
+Podcast episodes: npx audionorm -p podcast "episodes/*.mp3"
+Instagram video audio: npx audionorm -p instagram video-audio.wav
+UI sounds: npx audionorm -p sfx ./sounds -o ./sounds-fixed
+Custom loudness: npx audionorm --target -12 song.flac -f wav
+Custom peak: npx audionorm --preset peak --peak -3 sound.wav
+Measure only: npx audionorm --analyze track.wav
+Recursive glob: npx audionorm "sounds/**/*.wav" -p sfx</code></pre>
 
     <h2>Prompt</h2>
     <div class="prompt">
