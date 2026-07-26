@@ -119,7 +119,7 @@ export function DocsView({ onBack }: Props) {
           Read the AI guide and follow it. If you want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If your intent or input files are unclear, ask before acting. Respond in the user's language. Do not process files just because you read the guide.
         </p>
         <CopyCommand
-          command="Read https://audionorm.riyo.me/ai, follow its instructions, and handle my request. If I want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If my intent or input files are unclear, ask before acting. Respond in the user's language. Do not process files just because you read this page."
+          command="Read https://audionorm.riyo.me/ai, follow its instructions, and handle my request."
         />
       </section>
     </main>

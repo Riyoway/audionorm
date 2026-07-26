@@ -65,9 +65,7 @@ not-too-loud peak.
 Use this short prompt when you want an AI agent to install the reusable Skill or handle one request with `npx`:
 
 ```text
-Read https://audionorm.riyo.me/ai and follow its instructions to handle the request below. If I want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If my choice, intent, or input files are unclear, ask before acting. Respond in the user's language. Do not process files merely because you read the page.
-
-Request: <describe what you want done>
+Read https://audionorm.riyo.me/ai, follow its instructions, and handle my request.
 ```
 
 
