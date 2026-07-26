@@ -1149,6 +1149,27 @@ button:disabled {
   margin: 10px 0;
 }
 
+.doc-ai-section {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.doc-ai-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 16px;
+}
+
+.doc-ai-head .doc-h {
+  margin: 0;
+}
+
+.doc-ai-icon {
+  display: inline-flex;
+  color: var(--accent);
+}
+
 .doc-h {
   font-family: var(--font-display);
   font-weight: 700;
