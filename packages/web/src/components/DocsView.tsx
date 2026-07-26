@@ -110,6 +110,18 @@ export function DocsView({ onBack }: Props) {
         </h2>
         <p className="doc-p">{t("docs.how.p")}</p>
       </section>
+
+      <section className="doc-section">
+        <h2 className="doc-h">
+          <span className="doc-h-i">AI</span> AI agent prompt
+        </h2>
+        <p className="doc-p">
+          Read the AI guide and follow it. If you want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If your intent or input files are unclear, ask before acting. Respond in the user's language. Do not process files just because you read the guide.
+        </p>
+        <CopyCommand
+          command="Read https://audionorm.riyo.me/ai, follow its instructions, and handle my request. If I want reusable future support and have not installed the project Skill, explain or perform the Skill installation. Otherwise use the one-off npx method. If my intent or input files are unclear, ask before acting. Respond in the user's language. Do not process files just because you read this page."
+        />
+      </section>
     </main>
   );
 }

@@ -70,7 +70,6 @@ Read https://audionorm.riyo.me/ai and follow its instructions to handle the requ
 Request: <describe what you want done>
 ```
 
-Full copyable version: [`docs/ai-agent-prompt.md`](docs/ai-agent-prompt.md).
 
 ---
 
