@@ -1,4 +1,12 @@
-import { ArrowLeft, Bot } from "lucide-react";
+import {
+  ArrowLeft,
+  Bot,
+  Code2,
+  Info,
+  Settings2,
+  SlidersHorizontal,
+  Terminal,
+} from "lucide-react";
 import { PRESETS, presetsByCategory } from "@audio-normalizer/core";
 import { CopyCommand } from "./CopyCommand";
 import { useI18n } from "../i18n";
@@ -41,7 +49,7 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">$</span> {t("docs.qs")}
+          <span className="doc-h-i" aria-hidden="true"><Terminal size={17} strokeWidth={1.8} /></span> {t("docs.qs")}
         </h2>
         <CopyCommand command="npx audionorm track.wav" />
         <p className="doc-p">{t("docs.qs.p")}</p>
@@ -49,7 +57,7 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">#</span> {t("docs.presets")}
+          <span className="doc-h-i" aria-hidden="true"><SlidersHorizontal size={17} strokeWidth={1.8} /></span> {t("docs.presets")}
         </h2>
         <div className="doc-table">
           <div className="doc-tr doc-th">
@@ -78,7 +86,7 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">⚙</span> {t("docs.options")}
+          <span className="doc-h-i" aria-hidden="true"><Settings2 size={17} strokeWidth={1.8} /></span> {t("docs.options")}
         </h2>
         <dl className="opt-list">
           {OPTIONS.map((o) => (
@@ -92,7 +100,7 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">▷</span> {t("docs.examples")}
+          <span className="doc-h-i" aria-hidden="true"><Code2 size={17} strokeWidth={1.8} /></span> {t("docs.examples")}
         </h2>
         <p className="doc-p">{t("docs.ex.sfx")}</p>
         <CopyCommand command="npx audionorm ./sounds -p sfx -o ./sounds-fixed" />
@@ -106,7 +114,7 @@ export function DocsView({ onBack }: Props) {
 
       <section className="doc-section">
         <h2 className="doc-h">
-          <span className="doc-h-i">?</span> {t("docs.how")}
+          <span className="doc-h-i" aria-hidden="true"><Info size={17} strokeWidth={1.8} /></span> {t("docs.how")}
         </h2>
         <p className="doc-p">{t("docs.how.p")}</p>
       </section>
