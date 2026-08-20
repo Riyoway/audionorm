@@ -91,11 +91,25 @@ export function FileRow({ item, onDownload, onRemove }: Props) {
         <>
           <div className="file-stats">
             <div className="stat">
-              <span className="stat-label">{t("stat.loudness")}</span>
+              <span className="stat-label">{t("stat.loudnessAfter")}</span>
+              <span className="stat-value">{fmtDb(result.outputLufs)} LUFS</span>
+            </div>
+            <div className="stat">
+              <span className="stat-label">{t("stat.target")}</span>
+              <span className="stat-value">
+                {result.targetLufs !== undefined
+                  ? `${fmtDb(result.targetLufs)} LUFS`
+                  : result.targetPeakDb !== undefined
+                    ? `${fmtDb(result.targetPeakDb)} dB`
+                    : "—"}
+              </span>
+            </div>
+            <div className="stat">
+              <span className="stat-label">{t("stat.loudnessBefore")}</span>
               <span className="stat-value">{fmtDb(result.measurement.integratedLufs)} LUFS</span>
             </div>
             <div className="stat">
-              <span className="stat-label">{t("stat.peak")}</span>
+              <span className="stat-label">{t("stat.peakBefore")}</span>
               <span className="stat-value">{fmtDb(result.measurement.truePeakDb)} dB</span>
             </div>
             <div className="stat">
@@ -103,7 +117,7 @@ export function FileRow({ item, onDownload, onRemove }: Props) {
               <span className="stat-value accent">{fmtDb(result.plan.gainDb)} dB</span>
             </div>
             {result.plan.peakLimited && (
-              <span className="badge limited">
+              <span className="badge limited" title={t("badge.limitedTitle")}>
                 <CircleAlert size={13} />
                 {t("badge.limited")}
               </span>

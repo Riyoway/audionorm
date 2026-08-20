@@ -12,6 +12,11 @@ import { encodeWav, type BitDepth } from "../audio/encodeWav";
 export interface ProcessResult {
   measurement: LoudnessResult;
   plan: GainPlan;
+  /** Loudness after the planned gain, before WAV quantization. */
+  outputLufs: number;
+  /** The selected target, used to explain the result in the UI. */
+  targetLufs?: number;
+  targetPeakDb?: number;
   durationSec: number;
   sampleRate: number;
   channels: number;
@@ -35,10 +40,20 @@ export async function processFile(
   const plan = planGain(preset, measurement);
   const normalized = applyGain(decoded, plan.gainLinear);
   const blob = encodeWav(normalized, bitDepth);
+  // Gain-only normalization changes integrated loudness by the same number of
+  // dB. Keep the source measurement too, so the UI can distinguish before,
+  // target, and after values without measuring the entire file twice.
+  const outputLufs =
+    measurement.integratedLufs === -Infinity
+      ? -Infinity
+      : measurement.integratedLufs + plan.gainDb;
 
   return {
     measurement,
     plan,
+    outputLufs,
+    targetLufs: preset.targetLufs,
+    targetPeakDb: preset.targetPeakDb,
     durationSec: decoded.durationSec,
     sampleRate: decoded.sampleRate,
     channels: decoded.channels.length,
